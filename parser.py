@@ -1,1 +1,63 @@
-# parser.py
+# parser.py - Analisador sintático para CQL
+
+import ply.yacc as yacc
+from lexer import CQLLexer
+
+
+class CQLParser:
+    def __init__(self, lexer):
+        self.lexer = lexer
+        self.tokens = lexer.tokens
+        self.parser = yacc.yacc(module=self)
+
+    def parse(self, text):
+        return self.parser.parse(text, lexer=self.lexer.lexer)
+
+    # Precedência dos operadores
+    precedence = (
+        ('left', 'AND'),
+        ('left', 'EQ', 'NE', 'LT', 'GT', 'LE', 'GE'),
+    )
+
+    # Regras gramaticais
+    def p_program(self, p):
+        '''program : command_list'''
+        p[0] = ('PROGRAM', p[1])
+
+    def p_command_list(self, p):
+        '''command_list : command SEMICOLON
+                       | command SEMICOLON command_list'''
+        if len(p) == 3:
+            p[0] = [p[1]]
+        else:
+            p[0] = [p[1]] + p[3]
+
+    def p_command(self, p):
+        '''command : import_cmd
+                  | export_cmd
+                  | discard_cmd
+                  | rename_cmd
+                  | print_cmd
+                  | select_cmd
+                  | create_cmd
+                  | procedure_def
+                  | procedure_call'''
+        p[0] = p[1]
+
+    # Comandos de configuração de tabelas
+    def p_import_cmd(self, p):
+        'import_cmd : IMPORT TABLE ID FROM STRING'
+        p[0] = ('IMPORT', p[3], p[5])
+
+    def p_export_cmd(self, p):
+        'export_cmd : EXPORT TABLE ID AS STRING'
+        p[0] = ('EXPORT', p[3], p[5])
+
+    def p_error(self, p):
+        if p:
+            print(f"Syntax error at '{p.value}'")
+        else:
+            print("Syntax error at end of input")
+
+    def build(self):
+        self.parser = yacc.yacc(module=self)

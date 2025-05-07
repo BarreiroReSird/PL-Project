@@ -1,0 +1,48 @@
+# grammar.py - Definição da gramática para expressões matemáticas
+
+from lexer import CQLLexer
+from parser import CQLParser
+from csv_processor import CSVProcessor
+
+
+class CQLGrammar:
+    def __init__(self):
+        self.lexer = CQLLexer()
+        self.parser = CQLParser(self.lexer)
+        self.processor = CSVProcessor()
+
+    def build(self):
+        self.parser.build()
+
+    def parse(self, text):
+        if not hasattr(self.parser, 'parser'):
+            self.build()
+
+        ast = self.parser.parse(text)
+        return self.execute(ast)
+
+    def execute(self, ast):
+        if ast[0] == 'PROGRAM':
+            results = []
+            for cmd in ast[1]:
+                results.append(self.execute_command(cmd))
+            return results
+        return self.execute_command(ast)
+
+    def execute_command(self, cmd):
+        cmd_type = cmd[0]
+
+        if cmd_type == 'IMPORT':
+            table_name = cmd[1]
+            filename = cmd[2]
+            return self.processor.import_table(table_name, filename)
+
+        elif cmd_type == 'EXPORT':
+            table_name = cmd[1]
+            filename = cmd[2]
+            return self.processor.export_table(table_name, filename)
+
+        # Implementar outros comandos
+
+        else:
+            raise ValueError(f"Unknown command: {cmd_type}")
