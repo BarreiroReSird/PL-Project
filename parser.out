@@ -1,0 +1,577 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    COMMA
+    EQ
+    GE
+    GT
+    JOIN
+    LE
+    LIMIT
+    LPAREN
+    LT
+    NE
+    NUMBER
+    RPAREN
+    USING
+    WHERE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> command_list
+Rule 2     command_list -> command SEMICOLON
+Rule 3     command_list -> command SEMICOLON command_list
+Rule 4     command -> import_cmd
+Rule 5     command -> export_cmd
+Rule 6     command -> discard_cmd
+Rule 7     command -> rename_cmd
+Rule 8     command -> print_cmd
+Rule 9     command -> select_cmd
+Rule 10    command -> create_cmd
+Rule 11    command -> procedure_def
+Rule 12    command -> procedure_call
+Rule 13    import_cmd -> IMPORT TABLE ID FROM STRING
+Rule 14    export_cmd -> EXPORT TABLE ID AS STRING
+Rule 15    discard_cmd -> DISCARD TABLE ID
+Rule 16    rename_cmd -> RENAME TABLE ID AS ID
+Rule 17    print_cmd -> PRINT TABLE ID
+Rule 18    select_cmd -> SELECT ID FROM TABLE ID
+Rule 19    create_cmd -> CREATE TABLE ID
+Rule 20    procedure_def -> PROCEDURE ID DO command_list END
+Rule 21    procedure_call -> CALL ID
+
+Terminals, with rules where they appear
+
+AND                  : 
+AS                   : 14 16
+CALL                 : 21
+COMMA                : 
+CREATE               : 19
+DISCARD              : 15
+DO                   : 20
+END                  : 20
+EQ                   : 
+EXPORT               : 14
+FROM                 : 13 18
+GE                   : 
+GT                   : 
+ID                   : 13 14 15 16 16 17 18 18 19 20 21
+IMPORT               : 13
+JOIN                 : 
+LE                   : 
+LIMIT                : 
+LPAREN               : 
+LT                   : 
+NE                   : 
+NUMBER               : 
+PRINT                : 17
+PROCEDURE            : 20
+RENAME               : 16
+RPAREN               : 
+SELECT               : 18
+SEMICOLON            : 2 3
+STRING               : 13 14
+TABLE                : 13 14 15 16 17 18 19
+USING                : 
+WHERE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+command              : 2 3
+command_list         : 1 3 20
+create_cmd           : 10
+discard_cmd          : 6
+export_cmd           : 5
+import_cmd           : 4
+print_cmd            : 8
+procedure_call       : 12
+procedure_def        : 11
+program              : 0
+rename_cmd           : 7
+select_cmd           : 9
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . command_list
+    (2) command_list -> . command SEMICOLON
+    (3) command_list -> . command SEMICOLON command_list
+    (4) command -> . import_cmd
+    (5) command -> . export_cmd
+    (6) command -> . discard_cmd
+    (7) command -> . rename_cmd
+    (8) command -> . print_cmd
+    (9) command -> . select_cmd
+    (10) command -> . create_cmd
+    (11) command -> . procedure_def
+    (12) command -> . procedure_call
+    (13) import_cmd -> . IMPORT TABLE ID FROM STRING
+    (14) export_cmd -> . EXPORT TABLE ID AS STRING
+    (15) discard_cmd -> . DISCARD TABLE ID
+    (16) rename_cmd -> . RENAME TABLE ID AS ID
+    (17) print_cmd -> . PRINT TABLE ID
+    (18) select_cmd -> . SELECT ID FROM TABLE ID
+    (19) create_cmd -> . CREATE TABLE ID
+    (20) procedure_def -> . PROCEDURE ID DO command_list END
+    (21) procedure_call -> . CALL ID
+
+    IMPORT          shift and go to state 13
+    EXPORT          shift and go to state 14
+    DISCARD         shift and go to state 15
+    RENAME          shift and go to state 16
+    PRINT           shift and go to state 17
+    SELECT          shift and go to state 18
+    CREATE          shift and go to state 19
+    PROCEDURE       shift and go to state 20
+    CALL            shift and go to state 21
+
+    program                        shift and go to state 1
+    command_list                   shift and go to state 2
+    command                        shift and go to state 3
+    import_cmd                     shift and go to state 4
+    export_cmd                     shift and go to state 5
+    discard_cmd                    shift and go to state 6
+    rename_cmd                     shift and go to state 7
+    print_cmd                      shift and go to state 8
+    select_cmd                     shift and go to state 9
+    create_cmd                     shift and go to state 10
+    procedure_def                  shift and go to state 11
+    procedure_call                 shift and go to state 12
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> command_list .
+
+    $end            reduce using rule 1 (program -> command_list .)
+
+
+state 3
+
+    (2) command_list -> command . SEMICOLON
+    (3) command_list -> command . SEMICOLON command_list
+
+    SEMICOLON       shift and go to state 22
+
+
+state 4
+
+    (4) command -> import_cmd .
+
+    SEMICOLON       reduce using rule 4 (command -> import_cmd .)
+
+
+state 5
+
+    (5) command -> export_cmd .
+
+    SEMICOLON       reduce using rule 5 (command -> export_cmd .)
+
+
+state 6
+
+    (6) command -> discard_cmd .
+
+    SEMICOLON       reduce using rule 6 (command -> discard_cmd .)
+
+
+state 7
+
+    (7) command -> rename_cmd .
+
+    SEMICOLON       reduce using rule 7 (command -> rename_cmd .)
+
+
+state 8
+
+    (8) command -> print_cmd .
+
+    SEMICOLON       reduce using rule 8 (command -> print_cmd .)
+
+
+state 9
+
+    (9) command -> select_cmd .
+
+    SEMICOLON       reduce using rule 9 (command -> select_cmd .)
+
+
+state 10
+
+    (10) command -> create_cmd .
+
+    SEMICOLON       reduce using rule 10 (command -> create_cmd .)
+
+
+state 11
+
+    (11) command -> procedure_def .
+
+    SEMICOLON       reduce using rule 11 (command -> procedure_def .)
+
+
+state 12
+
+    (12) command -> procedure_call .
+
+    SEMICOLON       reduce using rule 12 (command -> procedure_call .)
+
+
+state 13
+
+    (13) import_cmd -> IMPORT . TABLE ID FROM STRING
+
+    TABLE           shift and go to state 23
+
+
+state 14
+
+    (14) export_cmd -> EXPORT . TABLE ID AS STRING
+
+    TABLE           shift and go to state 24
+
+
+state 15
+
+    (15) discard_cmd -> DISCARD . TABLE ID
+
+    TABLE           shift and go to state 25
+
+
+state 16
+
+    (16) rename_cmd -> RENAME . TABLE ID AS ID
+
+    TABLE           shift and go to state 26
+
+
+state 17
+
+    (17) print_cmd -> PRINT . TABLE ID
+
+    TABLE           shift and go to state 27
+
+
+state 18
+
+    (18) select_cmd -> SELECT . ID FROM TABLE ID
+
+    ID              shift and go to state 28
+
+
+state 19
+
+    (19) create_cmd -> CREATE . TABLE ID
+
+    TABLE           shift and go to state 29
+
+
+state 20
+
+    (20) procedure_def -> PROCEDURE . ID DO command_list END
+
+    ID              shift and go to state 30
+
+
+state 21
+
+    (21) procedure_call -> CALL . ID
+
+    ID              shift and go to state 31
+
+
+state 22
+
+    (2) command_list -> command SEMICOLON .
+    (3) command_list -> command SEMICOLON . command_list
+    (2) command_list -> . command SEMICOLON
+    (3) command_list -> . command SEMICOLON command_list
+    (4) command -> . import_cmd
+    (5) command -> . export_cmd
+    (6) command -> . discard_cmd
+    (7) command -> . rename_cmd
+    (8) command -> . print_cmd
+    (9) command -> . select_cmd
+    (10) command -> . create_cmd
+    (11) command -> . procedure_def
+    (12) command -> . procedure_call
+    (13) import_cmd -> . IMPORT TABLE ID FROM STRING
+    (14) export_cmd -> . EXPORT TABLE ID AS STRING
+    (15) discard_cmd -> . DISCARD TABLE ID
+    (16) rename_cmd -> . RENAME TABLE ID AS ID
+    (17) print_cmd -> . PRINT TABLE ID
+    (18) select_cmd -> . SELECT ID FROM TABLE ID
+    (19) create_cmd -> . CREATE TABLE ID
+    (20) procedure_def -> . PROCEDURE ID DO command_list END
+    (21) procedure_call -> . CALL ID
+
+    $end            reduce using rule 2 (command_list -> command SEMICOLON .)
+    END             reduce using rule 2 (command_list -> command SEMICOLON .)
+    IMPORT          shift and go to state 13
+    EXPORT          shift and go to state 14
+    DISCARD         shift and go to state 15
+    RENAME          shift and go to state 16
+    PRINT           shift and go to state 17
+    SELECT          shift and go to state 18
+    CREATE          shift and go to state 19
+    PROCEDURE       shift and go to state 20
+    CALL            shift and go to state 21
+
+    command                        shift and go to state 3
+    command_list                   shift and go to state 32
+    import_cmd                     shift and go to state 4
+    export_cmd                     shift and go to state 5
+    discard_cmd                    shift and go to state 6
+    rename_cmd                     shift and go to state 7
+    print_cmd                      shift and go to state 8
+    select_cmd                     shift and go to state 9
+    create_cmd                     shift and go to state 10
+    procedure_def                  shift and go to state 11
+    procedure_call                 shift and go to state 12
+
+state 23
+
+    (13) import_cmd -> IMPORT TABLE . ID FROM STRING
+
+    ID              shift and go to state 33
+
+
+state 24
+
+    (14) export_cmd -> EXPORT TABLE . ID AS STRING
+
+    ID              shift and go to state 34
+
+
+state 25
+
+    (15) discard_cmd -> DISCARD TABLE . ID
+
+    ID              shift and go to state 35
+
+
+state 26
+
+    (16) rename_cmd -> RENAME TABLE . ID AS ID
+
+    ID              shift and go to state 36
+
+
+state 27
+
+    (17) print_cmd -> PRINT TABLE . ID
+
+    ID              shift and go to state 37
+
+
+state 28
+
+    (18) select_cmd -> SELECT ID . FROM TABLE ID
+
+    FROM            shift and go to state 38
+
+
+state 29
+
+    (19) create_cmd -> CREATE TABLE . ID
+
+    ID              shift and go to state 39
+
+
+state 30
+
+    (20) procedure_def -> PROCEDURE ID . DO command_list END
+
+    DO              shift and go to state 40
+
+
+state 31
+
+    (21) procedure_call -> CALL ID .
+
+    SEMICOLON       reduce using rule 21 (procedure_call -> CALL ID .)
+
+
+state 32
+
+    (3) command_list -> command SEMICOLON command_list .
+
+    $end            reduce using rule 3 (command_list -> command SEMICOLON command_list .)
+    END             reduce using rule 3 (command_list -> command SEMICOLON command_list .)
+
+
+state 33
+
+    (13) import_cmd -> IMPORT TABLE ID . FROM STRING
+
+    FROM            shift and go to state 41
+
+
+state 34
+
+    (14) export_cmd -> EXPORT TABLE ID . AS STRING
+
+    AS              shift and go to state 42
+
+
+state 35
+
+    (15) discard_cmd -> DISCARD TABLE ID .
+
+    SEMICOLON       reduce using rule 15 (discard_cmd -> DISCARD TABLE ID .)
+
+
+state 36
+
+    (16) rename_cmd -> RENAME TABLE ID . AS ID
+
+    AS              shift and go to state 43
+
+
+state 37
+
+    (17) print_cmd -> PRINT TABLE ID .
+
+    SEMICOLON       reduce using rule 17 (print_cmd -> PRINT TABLE ID .)
+
+
+state 38
+
+    (18) select_cmd -> SELECT ID FROM . TABLE ID
+
+    TABLE           shift and go to state 44
+
+
+state 39
+
+    (19) create_cmd -> CREATE TABLE ID .
+
+    SEMICOLON       reduce using rule 19 (create_cmd -> CREATE TABLE ID .)
+
+
+state 40
+
+    (20) procedure_def -> PROCEDURE ID DO . command_list END
+    (2) command_list -> . command SEMICOLON
+    (3) command_list -> . command SEMICOLON command_list
+    (4) command -> . import_cmd
+    (5) command -> . export_cmd
+    (6) command -> . discard_cmd
+    (7) command -> . rename_cmd
+    (8) command -> . print_cmd
+    (9) command -> . select_cmd
+    (10) command -> . create_cmd
+    (11) command -> . procedure_def
+    (12) command -> . procedure_call
+    (13) import_cmd -> . IMPORT TABLE ID FROM STRING
+    (14) export_cmd -> . EXPORT TABLE ID AS STRING
+    (15) discard_cmd -> . DISCARD TABLE ID
+    (16) rename_cmd -> . RENAME TABLE ID AS ID
+    (17) print_cmd -> . PRINT TABLE ID
+    (18) select_cmd -> . SELECT ID FROM TABLE ID
+    (19) create_cmd -> . CREATE TABLE ID
+    (20) procedure_def -> . PROCEDURE ID DO command_list END
+    (21) procedure_call -> . CALL ID
+
+    IMPORT          shift and go to state 13
+    EXPORT          shift and go to state 14
+    DISCARD         shift and go to state 15
+    RENAME          shift and go to state 16
+    PRINT           shift and go to state 17
+    SELECT          shift and go to state 18
+    CREATE          shift and go to state 19
+    PROCEDURE       shift and go to state 20
+    CALL            shift and go to state 21
+
+    command_list                   shift and go to state 45
+    command                        shift and go to state 3
+    import_cmd                     shift and go to state 4
+    export_cmd                     shift and go to state 5
+    discard_cmd                    shift and go to state 6
+    rename_cmd                     shift and go to state 7
+    print_cmd                      shift and go to state 8
+    select_cmd                     shift and go to state 9
+    create_cmd                     shift and go to state 10
+    procedure_def                  shift and go to state 11
+    procedure_call                 shift and go to state 12
+
+state 41
+
+    (13) import_cmd -> IMPORT TABLE ID FROM . STRING
+
+    STRING          shift and go to state 46
+
+
+state 42
+
+    (14) export_cmd -> EXPORT TABLE ID AS . STRING
+
+    STRING          shift and go to state 47
+
+
+state 43
+
+    (16) rename_cmd -> RENAME TABLE ID AS . ID
+
+    ID              shift and go to state 48
+
+
+state 44
+
+    (18) select_cmd -> SELECT ID FROM TABLE . ID
+
+    ID              shift and go to state 49
+
+
+state 45
+
+    (20) procedure_def -> PROCEDURE ID DO command_list . END
+
+    END             shift and go to state 50
+
+
+state 46
+
+    (13) import_cmd -> IMPORT TABLE ID FROM STRING .
+
+    SEMICOLON       reduce using rule 13 (import_cmd -> IMPORT TABLE ID FROM STRING .)
+
+
+state 47
+
+    (14) export_cmd -> EXPORT TABLE ID AS STRING .
+
+    SEMICOLON       reduce using rule 14 (export_cmd -> EXPORT TABLE ID AS STRING .)
+
+
+state 48
+
+    (16) rename_cmd -> RENAME TABLE ID AS ID .
+
+    SEMICOLON       reduce using rule 16 (rename_cmd -> RENAME TABLE ID AS ID .)
+
+
+state 49
+
+    (18) select_cmd -> SELECT ID FROM TABLE ID .
+
+    SEMICOLON       reduce using rule 18 (select_cmd -> SELECT ID FROM TABLE ID .)
+
+
+state 50
+
+    (20) procedure_def -> PROCEDURE ID DO command_list END .
+
+    SEMICOLON       reduce using rule 20 (procedure_def -> PROCEDURE ID DO command_list END .)
+

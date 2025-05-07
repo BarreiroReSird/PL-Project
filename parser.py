@@ -61,3 +61,31 @@ class CQLParser:
 
     def build(self):
         self.parser = yacc.yacc(module=self)
+
+    def p_discard_cmd(self, p):
+        'discard_cmd : DISCARD TABLE ID'
+        p[0] = ('DISCARD', p[3])
+
+    def p_rename_cmd(self, p):
+        'rename_cmd : RENAME TABLE ID AS ID'
+        p[0] = ('RENAME', p[3], p[5])
+
+    def p_print_cmd(self, p):
+        'print_cmd : PRINT TABLE ID'
+        p[0] = ('PRINT', p[3])
+
+    def p_select_cmd(self, p):
+        'select_cmd : SELECT ID FROM TABLE ID'
+        p[0] = ('SELECT', p[2], p[5])
+
+    def p_create_cmd(self, p):
+        'create_cmd : CREATE TABLE ID'
+        p[0] = ('CREATE', p[3])
+
+    def p_procedure_def(self, p):
+        'procedure_def : PROCEDURE ID DO command_list END'
+        p[0] = ('PROCEDURE_DEF', p[2], p[4])
+
+    def p_procedure_call(self, p):
+        'procedure_call : CALL ID'
+        p[0] = ('PROCEDURE_CALL', p[2])

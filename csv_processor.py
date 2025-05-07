@@ -32,10 +32,16 @@ class CSVProcessor:
                 writer = csv.DictWriter(
                     file, fieldnames=self.tables[table_name]['headers'])
                 writer.writeheader()
-                writer.writerows(self.tables[table_name]['rows'])
+
+                # Ensure all rows match the headers
+                for row in self.tables[table_name]['rows']:
+                    sanitized_row = {key: row.get(
+                        key, '') for key in self.tables[table_name]['headers']}
+                    writer.writerow(sanitized_row)
+
             return True
         except Exception as e:
             print(f"Error exporting table: {e}")
             return False
 
-    # Implementar outras operações: select, join, etc.
+    # Implementar outras operações: select, join, etc...

@@ -1,0 +1,2 @@
+IMPORT TABLE estacoes FROM "stations.csv";
+EXPORT TABLE estacoes AS "stationsV2.csv";
