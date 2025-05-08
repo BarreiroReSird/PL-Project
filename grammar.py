@@ -42,6 +42,19 @@ class CQLGrammar:
             filename = cmd[2]
             return self.processor.export_table(table_name, filename)
 
+        elif cmd_type == 'DISCARD':
+            table_name = cmd[1]
+            return self.processor.discard_table(table_name)
+
+        elif cmd_type == 'RENAME':
+            old_name = cmd[1]
+            new_name = cmd[2]
+            return self.processor.rename_table(old_name, new_name)
+
+        elif cmd_type == 'PRINT':
+            table_name = cmd[1]
+            return self.processor.print_table(table_name)
+
         # Implementar outros comandos
 
         else:

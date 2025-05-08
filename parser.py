@@ -67,8 +67,8 @@ class CQLParser:
         p[0] = ('DISCARD', p[3])
 
     def p_rename_cmd(self, p):
-        'rename_cmd : RENAME TABLE ID AS ID'
-        p[0] = ('RENAME', p[3], p[5])
+        'rename_cmd : RENAME TABLE ID ID'
+        p[0] = ('RENAME', p[3], p[4])
 
     def p_print_cmd(self, p):
         'print_cmd : PRINT TABLE ID'

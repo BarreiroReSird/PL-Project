@@ -110,3 +110,36 @@ class CSVProcessor:
         except Exception as e:
             print(f"Error exporting table: {e}")
             return False
+
+    def discard_table(self, table_name):
+        if table_name in self.tables:
+            del self.tables[table_name]
+            return f"Table '{table_name}' discarded successfully"
+        else:
+            return f"Error: Table '{table_name}' not found"
+
+    def rename_table(self, old_name, new_name):
+        if old_name not in self.tables:
+            return f"Error: Table '{old_name}' not found"
+
+        if new_name in self.tables:
+            return f"Error: Table '{new_name}' already exists"
+
+        self.tables[new_name] = self.tables.pop(old_name)
+        return f"Table '{old_name}' renamed to '{new_name}' successfully"
+
+    def print_table(self, table_name):
+        if table_name not in self.tables:
+            return f"Error: Table '{table_name}' not found"
+
+        table = self.tables[table_name]
+
+        # Imprimir cabeçalhos
+        print(" | ".join(table['headers']))
+
+        # Imprimir linhas de dados
+        for row in table['rows']:
+            print(" | ".join(str(row.get(header, ''))
+                             for header in table['headers']))
+
+        return f"Table '{table_name}' printed successfully"
