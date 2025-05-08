@@ -1,2 +1,8 @@
 IMPORT TABLE stations FROM "stations.csv";
-EXPORT TABLE stations AS "stationsV2.csv";
+EXPORT TABLE stations AS "stationsExp.csv";
+
+IMPORT TABLE stations FROM "observations.csv";
+EXPORT TABLE stations AS "observationsExp.csv";
+
+IMPORT TABLE stations FROM "observationsV2.csv";
+EXPORT TABLE stations AS "observationsV2Exp.csv";

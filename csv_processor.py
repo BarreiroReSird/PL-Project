@@ -94,6 +94,7 @@ class CSVProcessor:
         try:
             with open(filename, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
+                # writer = csv.writer(file, quoting=csv.QUOTE_NONE, escapechar='\\')  # Evita aspas automáticas
 
                 # Escrever cabeçalhos
                 writer.writerow(self.tables[table_name]['headers'])
