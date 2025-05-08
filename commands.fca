@@ -1,2 +1,2 @@
-IMPORT TABLE estacoes FROM "stations.csv";
-EXPORT TABLE estacoes AS "stationsV2.csv";
+IMPORT TABLE stations FROM "stations.csv";
+EXPORT TABLE stations AS "stationsV2.csv";
