@@ -1,8 +1,0 @@
--- This is a single line comment
-IMPORT TABLE stations FROM "stations.csv";  -- Another comment
-
-{-
-  This is a multi-line comment
-  {- with nesting -}
--}
-PRINT TABLE stations;

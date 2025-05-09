@@ -143,3 +143,23 @@ class CSVProcessor:
                              for header in table['headers']))
 
         return f"Table '{table_name}' printed successfully"
+    
+    def select_columns(self, table_name, columns):
+        if table_name not in self.tables:
+            return f"Error: Table '{table_name}' not found"
+
+        table = self.tables[table_name]
+    
+        if columns == '*':
+            return self.print_table(table_name)
+        else:
+            # Implemente a lógica para selecionar colunas específicas aqui
+            if columns not in table['headers']:
+                return f"Error: Column '{columns}' not found in table '{table_name}'"
+        
+            # Imprimir apenas a coluna solicitada
+            print(columns)
+            for row in table['rows']:
+                print(row.get(columns, ''))
+        
+            return f"Selected column '{columns}' from table '{table_name}'"

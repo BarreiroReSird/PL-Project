@@ -75,8 +75,13 @@ class CQLParser:
         p[0] = ('PRINT', p[3])
 
     def p_select_cmd(self, p):
-        'select_cmd : SELECT ID FROM TABLE ID'
+        '''select_cmd : SELECT select_list FROM TABLE ID'''
         p[0] = ('SELECT', p[2], p[5])
+
+    def p_select_list(self, p):
+        '''select_list : STAR
+                   | ID'''
+        p[0] = p[1]
 
     def p_create_cmd(self, p):
         'create_cmd : CREATE TABLE ID'

@@ -23,3 +23,13 @@ IMPORT TABLE stations FROM "stations.csv";
 PRINT TABLE stations;
 DISCARD TABLE stations;
 PRINT TABLE stations;
+
+IMPORT TABLE stations FROM "stations.csv";
+SELECT Coordenadas FROM TABLE stations;
+PRINT TABLE stations;
+DISCARD TABLE stations;
+
+IMPORT TABLE observations FROM "observations.csv";
+SELECT * FROM TABLE observations;
+PRINT TABLE observations;
+DISCARD TABLE observations;

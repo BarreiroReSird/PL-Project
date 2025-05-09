@@ -55,6 +55,21 @@ class CQLGrammar:
             table_name = cmd[1]
             return self.processor.print_table(table_name)
 
+        elif cmd_type == 'SELECT':
+            column = cmd[1]
+            table_name = cmd[2]
+            if column == '*':
+                # Se for SELECT *, apenas imprima a tabela inteira
+                return self.processor.print_table(table_name)
+            else:
+                # Implemente aqui a lógica para selecionar colunas específicas
+                return f"Selected column '{column}' from table '{table_name}'"
+
+        elif cmd_type == 'SELECT':
+            column = cmd[1]
+            table_name = cmd[2]
+            return self.processor.select_columns(table_name, column)
+
         # Implementar outros comandos
 
         else:

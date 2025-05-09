@@ -1,3 +1,5 @@
+# lexer.py - ...
+
 import re
 import ply.lex as lex
 
@@ -12,16 +14,19 @@ class CQLLexer:
         ('multicomment', 'exclusive'),  # For multi-line comments
     )
 
-    # Token list
+    # Lista de tokens
     tokens = (
         'IMPORT', 'EXPORT', 'DISCARD', 'RENAME', 'PRINT',
         'SELECT', 'FROM', 'WHERE', 'CREATE', 'TABLE',
         'JOIN', 'USING', 'PROCEDURE', 'DO', 'END', 'CALL',
-        'LIMIT', 'AND', 'AS',
+        'LIMIT', 'AND', 'AS', 'STAR',
         'ID', 'NUMBER', 'STRING', 'COMMA', 'SEMICOLON',
         'EQ', 'NE', 'LT', 'GT', 'LE', 'GE',
         'LPAREN', 'RPAREN'
     )
+
+    # Regra
+    t_STAR = r'\*'
 
     # Regular tokens (initial state)
     t_ignore = ' \t'  # Ignore whitespace
