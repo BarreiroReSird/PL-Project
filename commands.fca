@@ -33,3 +33,5 @@ IMPORT TABLE observations FROM "observations.csv";
 SELECT * FROM TABLE observations;
 PRINT TABLE observations;
 DISCARD TABLE observations;
+
+SELECT DataHoraObservacao,Id FROM TABLE observations;

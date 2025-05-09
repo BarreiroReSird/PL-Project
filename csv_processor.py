@@ -150,16 +150,25 @@ class CSVProcessor:
 
         table = self.tables[table_name]
     
-        if columns == '*':
+        # Verifica se é uma lista de colunas
+        if not isinstance(columns, list):
+            columns = [columns]
+    
+        # Verifica se todas as colunas existem
+        for col in columns:
+            if col != '*' and col not in table['headers']:
+                return f"Error: Column '{col}' not found in table '{table_name}'"
+    
+        if '*' in columns:
+            # Se contém *, mostra todas as colunas
             return self.print_table(table_name)
         else:
-            # Implemente a lógica para selecionar colunas específicas aqui
-            if columns not in table['headers']:
-                return f"Error: Column '{columns}' not found in table '{table_name}'"
+            # Imprime apenas as colunas solicitadas
+            # Imprime cabeçalhos
+            print(" | ".join(columns))
         
-            # Imprimir apenas a coluna solicitada
-            print(columns)
+            # Imprime linhas de dados
             for row in table['rows']:
-                print(row.get(columns, ''))
+                print(" | ".join(str(row.get(col, '')) for col in columns))
         
-            return f"Selected column '{columns}' from table '{table_name}'"
+            return f"Selected columns {columns} from table '{table_name}'"

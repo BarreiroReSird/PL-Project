@@ -70,7 +70,17 @@ class CQLGrammar:
             table_name = cmd[2]
             return self.processor.select_columns(table_name, column)
 
-        # Implementar outros comandos
+        elif cmd_type == 'SELECT':
+            columns = cmd[1] 
+            table_name = cmd[2]
+            if isinstance(columns, list) and '*' in columns:
+                return self.processor.print_table(table_name)
+            elif isinstance(columns, list):
+                return self.processor.select_columns(table_name, columns)
+            elif columns == '*':
+                return self.processor.print_table(table_name)
+            else:
+                return self.processor.select_columns(table_name, [columns])
 
         else:
             raise ValueError(f"Unknown command: {cmd_type}")

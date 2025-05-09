@@ -80,8 +80,12 @@ class CQLParser:
 
     def p_select_list(self, p):
         '''select_list : STAR
-                   | ID'''
-        p[0] = p[1]
+                       | ID
+                       | select_list COMMA ID'''
+        if len(p) == 2:
+            p[0] = [p[1]]  # Para * ou um único ID
+        else:
+            p[0] = p[1] + [p[3]]  # Adiciona mais um ID à lista
 
     def p_create_cmd(self, p):
         'create_cmd : CREATE TABLE ID'
