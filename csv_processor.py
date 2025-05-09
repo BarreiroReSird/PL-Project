@@ -94,7 +94,6 @@ class CSVProcessor:
         try:
             with open(filename, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
-                # writer = csv.writer(file, quoting=csv.QUOTE_NONE, escapechar='\\')  # Evita aspas automáticas
 
                 # Escrever cabeçalhos
                 writer.writerow(self.tables[table_name]['headers'])
@@ -134,41 +133,45 @@ class CSVProcessor:
 
         table = self.tables[table_name]
 
+        # Determinar a largura máxima de cada coluna
+        col_widths = []
+        for header in table['headers']:
+            max_width = len(header)
+            for row in table['rows']:
+                value = str(row.get(header, ''))
+                if len(value) > max_width:
+                    max_width = len(value)
+            col_widths.append(max_width + 2)  # Adiciona um pouco de espaço
+
         # Imprimir cabeçalhos
-        print(" | ".join(table['headers']))
+        header_line = " | ".join(
+            f"{header:<{col_widths[i]}}"
+            for i, header in enumerate(table['headers']))
+        print(header_line)
+
+        # Imprimir separador
+        print("-" * len(header_line))
 
         # Imprimir linhas de dados
         for row in table['rows']:
-            print(" | ".join(str(row.get(header, ''))
-                             for header in table['headers']))
+            print(" | ".join(
+                f"{str(row.get(header, '')):<{col_widths[i]}}"
+                for i, header in enumerate(table['headers'])))
 
         return f"Table '{table_name}' printed successfully"
-    
-    def select_columns(self, table_name, columns):
+
+    def select_all_raw(self, table_name):
         if table_name not in self.tables:
             return f"Error: Table '{table_name}' not found"
 
         table = self.tables[table_name]
-    
-        # Verifica se é uma lista de colunas
-        if not isinstance(columns, list):
-            columns = [columns]
-    
-        # Verifica se todas as colunas existem
-        for col in columns:
-            if col != '*' and col not in table['headers']:
-                return f"Error: Column '{col}' not found in table '{table_name}'"
-    
-        if '*' in columns:
-            # Se contém *, mostra todas as colunas
-            return self.print_table(table_name)
-        else:
-            # Imprime apenas as colunas solicitadas
-            # Imprime cabeçalhos
-            print(" | ".join(columns))
-        
-            # Imprime linhas de dados
-            for row in table['rows']:
-                print(" | ".join(str(row.get(col, '')) for col in columns))
-        
-            return f"Selected columns {columns} from table '{table_name}'"
+
+        # Imprimir cabeçalhos separados por vírgula
+        print(",".join(table['headers']))
+
+        # Imprimir linhas de dados separadas por vírgula
+        for row in table['rows']:
+            print(",".join(str(row.get(header, ''))
+                  for header in table['headers']))
+
+        return f"Raw data from table '{table_name}'"

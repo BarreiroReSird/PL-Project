@@ -1,37 +1,54 @@
+-- =============================================
+-- LISTA DE COMANDOS
+-- =============================================
 
+-- =============================================
+-- TESTES DA FASE A (Manipulação de Tabelas)
+-- =============================================
+
+-- Teste A1: Importar tabela de um ficheiro CSV
+IMPORT TABLE stations FROM "stations.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- Teste A2: Exportar tabela para um ficheiro CSV
 IMPORT TABLE stations FROM "stations.csv";
 EXPORT TABLE stations AS "stationsExp.csv";
 
-IMPORT TABLE observations FROM "observations.csv";
-EXPORT TABLE observations AS "observationsExp.csv";
+-- Limpar estado entre testes
+DISCARD TABLE stations;
 
-IMPORT TABLE observationsV2 FROM "observationsV2.csv";
-EXPORT TABLE observationsV2 AS "observationsV2Exp.csv";
+-- Teste A3: Descartar tabela da memória
+IMPORT TABLE stations FROM "stations.csv";
+DISCARD TABLE stations;
 
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- Teste A4: Renomear tabela
 IMPORT TABLE stations FROM "stations.csv";
 RENAME TABLE stations stationsRenamed;
-EXPORT TABLE stations AS "stationsExp.csv";
-EXPORT TABLE stationsRenamed AS "stationsExp.csv";
+EXPORT TABLE stationsRenamed AS "stationsRenamedExp.csv";
 
+-- Limpar estado entre testes
 DISCARD TABLE stations;
+DISCARD TABLE stationsRenamed;
 
-IMPORT TABLE stations FROM "stations.csv";
-DISCARD TABLE stations;
-EXPORT TABLE stations AS "stationsExp.csv";
-
+-- Teste A5: Imprimir tabela no terminal
 IMPORT TABLE stations FROM "stations.csv";
 PRINT TABLE stations;
-DISCARD TABLE stations;
-PRINT TABLE stations;
 
-IMPORT TABLE stations FROM "stations.csv";
-SELECT Coordenadas FROM TABLE stations;
-PRINT TABLE stations;
+-- Limpar estado entre testes
 DISCARD TABLE stations;
 
+-- =============================================
+-- TESTES DA FASE B (Consultas)
+-- =============================================
+
+-- Teste B1: 
 IMPORT TABLE observations FROM "observations.csv";
 SELECT * FROM TABLE observations;
-PRINT TABLE observations;
-DISCARD TABLE observations;
 
-SELECT DataHoraObservacao,Id FROM TABLE observations;
+-- Limpar estado entre testes
+DISCARD TABLE observations;

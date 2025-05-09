@@ -1,0 +1,36 @@
+IMPORT TABLE stations FROM "stations.csv";
+EXPORT TABLE stations AS "stationsExp.csv";
+
+IMPORT TABLE observations FROM "observations.csv";
+EXPORT TABLE observations AS "observationsExp.csv";
+
+IMPORT TABLE observationsV2 FROM "observationsV2.csv";
+EXPORT TABLE observationsV2 AS "observationsV2Exp.csv";
+
+IMPORT TABLE stations FROM "stations.csv";
+RENAME TABLE stations stationsRenamed;
+EXPORT TABLE stations AS "stationsExp.csv";
+EXPORT TABLE stationsRenamed AS "stationsExp.csv";
+
+DISCARD TABLE stations;
+
+IMPORT TABLE stations FROM "stations.csv";
+DISCARD TABLE stations;
+EXPORT TABLE stations AS "stationsExp.csv";
+
+IMPORT TABLE stations FROM "stations.csv";
+PRINT TABLE stations;
+DISCARD TABLE stations;
+PRINT TABLE stations;
+
+IMPORT TABLE stations FROM "stations.csv";
+SELECT Coordenadas FROM TABLE stations;
+PRINT TABLE stations;
+DISCARD TABLE stations;
+
+IMPORT TABLE observations FROM "observations.csv";
+SELECT * FROM TABLE observations;
+PRINT TABLE observations;
+DISCARD TABLE observations;
+
+SELECT DataHoraObservacao,Id FROM TABLE observations;

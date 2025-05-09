@@ -1,0 +1,3 @@
+-- Teste B1: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM TABLE observations;
