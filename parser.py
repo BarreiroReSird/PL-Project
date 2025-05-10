@@ -75,8 +75,17 @@ class CQLParser:
         p[0] = ('PRINT', p[3])
 
     def p_select_cmd(self, p):
-        '''select_cmd : SELECT select_list FROM TABLE ID'''
-        p[0] = ('SELECT', p[2], p[5])
+        '''select_cmd : SELECT select_list FROM table_reference
+                     | SELECT select_list FROM table_reference WHERE condition'''
+        if len(p) == 5:
+            p[0] = ('SELECT', p[2], p[4], None)
+        else:
+            p[0] = ('SELECT', p[2], p[4], p[6])
+
+    def p_table_reference(self, p):
+        '''table_reference : ID
+                          | TABLE ID'''
+        p[0] = p[1] if len(p) == 2 else p[2]
 
     def p_select_list(self, p):
         '''select_list : STAR
@@ -94,6 +103,23 @@ class CQLParser:
                 p[0] = p[1] + [p[3]]  # Adiciona mais um ID à lista
             else:
                 p[0] = [p[1], p[3]]  # Cria lista com dois IDs
+
+    def p_condition(self, p):
+        '''condition : expression
+                    | condition AND condition'''
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = ('AND', p[1], p[3])
+
+    def p_expression(self, p):
+        '''expression : ID LT NUMBER
+                     | ID GT NUMBER
+                     | ID LE NUMBER
+                     | ID GE NUMBER
+                     | ID EQ NUMBER
+                     | ID NE NUMBER'''
+        p[0] = (p[2], p[1], p[3])
 
     def p_create_cmd(self, p):
         'create_cmd : CREATE TABLE ID'

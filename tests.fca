@@ -1,5 +1,6 @@
--- Teste B1: 
+-- Teste B3: 
 IMPORT TABLE observations FROM "observationsV2.csv";
-PRINT TABLE observations;
 SELECT * FROM TABLE observations;
-SELECT DataHoraObservacao,Id FROM TABLE observations;
+SELECT * FROM observations WHERE Temperatura > 22;
+SELECT * FROM observations WHERE Temperatura > 22 AND Temperatura < 32;
+SELECT Id, Temperatura FROM observations WHERE Temperatura > 22;

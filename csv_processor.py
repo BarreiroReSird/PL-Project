@@ -51,6 +51,35 @@ class CSVProcessor:
 
         return [field.strip('"') for field in fields]
 
+    def _evaluate_condition(self, row, condition):
+        if condition is None:
+            return True
+
+        if condition[0] == 'AND':
+            return (self._evaluate_condition(row, condition[1]) and
+                    self._evaluate_condition(row, condition[2]))
+
+        op, column, value = condition
+        try:
+            row_value = float(row.get(column, ''))
+            value = float(value)
+        except ValueError:
+            return False
+
+        if op == '<':
+            return row_value < value
+        elif op == '>':
+            return row_value > value
+        elif op == '<=':
+            return row_value <= value
+        elif op == '>=':
+            return row_value >= value
+        elif op == '=':
+            return row_value == value
+        elif op == '<>':
+            return row_value != value
+        return False
+
     def import_table(self, table_name, filename):
         try:
             with open(filename, 'r', encoding='utf-8') as file:
@@ -160,7 +189,7 @@ class CSVProcessor:
 
         return f"Table '{table_name}' printed successfully"
 
-    def select_all_raw(self, table_name):
+    def select_all_raw(self, table_name, condition=None):
         if table_name not in self.tables:
             return f"Error: Table '{table_name}' not found"
 
@@ -171,12 +200,13 @@ class CSVProcessor:
 
         # Imprimir linhas de dados separadas por vírgula
         for row in table['rows']:
-            print(",".join(str(row.get(header, ''))
-                  for header in table['headers']))
+            if self._evaluate_condition(row, condition):
+                print(",".join(str(row.get(header, ''))
+                      for header in table['headers']))
 
         return f"Raw data from table '{table_name}'"
 
-    def select_columns(self, table_name, columns):
+    def select_columns(self, table_name, columns, condition=None):
         if table_name not in self.tables:
             return f"Error: Table '{table_name}' not found"
 
@@ -192,6 +222,7 @@ class CSVProcessor:
 
         # Imprimir linhas de dados apenas com as colunas selecionadas
         for row in table['rows']:
-            print(",".join(str(row.get(col, '')) for col in columns))
+            if self._evaluate_condition(row, condition):
+                print(",".join(str(row.get(col, '')) for col in columns))
 
         return f"Selected columns {columns} from table '{table_name}'"
