@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftANDleftEQNELTGTLEGEAND AS CALL COMMA CREATE DISCARD DO END EQ EXPORT FROM GE GT ID IMPORT JOIN LE LIMIT LPAREN LT NE NUMBER PRINT PROCEDURE RENAME RPAREN SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : command_listcommand_list : command SEMICOLON\n                       | command SEMICOLON command_listcommand : import_cmd\n                  | export_cmd\n                  | discard_cmd\n                  | rename_cmd\n                  | print_cmd\n                  | select_cmd\n                  | create_cmd\n                  | procedure_def\n                  | procedure_callimport_cmd : IMPORT TABLE ID FROM STRINGexport_cmd : EXPORT TABLE ID AS STRINGdiscard_cmd : DISCARD TABLE IDrename_cmd : RENAME TABLE ID IDprint_cmd : PRINT TABLE IDselect_cmd : SELECT select_list FROM TABLE IDselect_list : STAR\n                       | ID\n                       | select_list COMMA IDcreate_cmd : CREATE TABLE IDprocedure_def : PROCEDURE ID DO command_list ENDprocedure_call : CALL ID'
+_lr_signature = 'leftANDleftEQNELTGTLEGEAND AS CALL COMMA CREATE DISCARD DO END EQ EXPORT FROM GE GT ID IMPORT JOIN LE LIMIT LPAREN LT NE NUMBER PRINT PROCEDURE RENAME RPAREN SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : command_listcommand_list : command SEMICOLON\n                       | command SEMICOLON command_listcommand : import_cmd\n                  | export_cmd\n                  | discard_cmd\n                  | rename_cmd\n                  | print_cmd\n                  | select_cmd\n                  | create_cmd\n                  | procedure_def\n                  | procedure_callimport_cmd : IMPORT TABLE ID FROM STRINGexport_cmd : EXPORT TABLE ID AS STRINGdiscard_cmd : DISCARD TABLE IDrename_cmd : RENAME TABLE ID IDprint_cmd : PRINT TABLE IDselect_cmd : SELECT select_list FROM TABLE IDselect_list : STAR\n                      | ID\n                      | select_list COMMA IDcreate_cmd : CREATE TABLE IDprocedure_def : PROCEDURE ID DO command_list ENDprocedure_call : CALL ID'
     
 _lr_action_items = {'IMPORT':([0,22,43,],[13,13,13,]),'EXPORT':([0,22,43,],[14,14,14,]),'DISCARD':([0,22,43,],[15,15,15,]),'RENAME':([0,22,43,],[16,16,16,]),'PRINT':([0,22,43,],[17,17,17,]),'SELECT':([0,22,43,],[18,18,18,]),'CREATE':([0,22,43,],[19,19,19,]),'PROCEDURE':([0,22,43,],[20,20,20,]),'CALL':([0,22,43,],[21,21,21,]),'$end':([1,2,22,34,],[0,-1,-2,-3,]),'SEMICOLON':([3,4,5,6,7,8,9,10,11,12,33,37,39,42,46,50,51,52,53,],[22,-4,-5,-6,-7,-8,-9,-10,-11,-12,-24,-15,-17,-22,-16,-13,-14,-18,-23,]),'TABLE':([13,14,15,16,17,19,40,],[23,24,25,26,27,31,47,]),'STAR':([18,],[30,]),'ID':([18,20,21,23,24,25,26,27,31,38,41,47,],[29,32,33,35,36,37,38,39,42,46,48,52,]),'END':([22,34,49,],[-2,-3,53,]),'FROM':([28,29,30,35,48,],[40,-20,-19,44,-21,]),'COMMA':([28,29,30,48,],[41,-20,-19,-21,]),'DO':([32,],[43,]),'AS':([36,],[45,]),'STRING':([44,45,],[50,51,]),}
 
@@ -48,7 +48,7 @@ _lr_productions = [
   ('select_list -> STAR','select_list',1,'p_select_list','parser.py',82),
   ('select_list -> ID','select_list',1,'p_select_list','parser.py',83),
   ('select_list -> select_list COMMA ID','select_list',3,'p_select_list','parser.py',84),
-  ('create_cmd -> CREATE TABLE ID','create_cmd',3,'p_create_cmd','parser.py',91),
-  ('procedure_def -> PROCEDURE ID DO command_list END','procedure_def',5,'p_procedure_def','parser.py',95),
-  ('procedure_call -> CALL ID','procedure_call',2,'p_procedure_call','parser.py',99),
+  ('create_cmd -> CREATE TABLE ID','create_cmd',3,'p_create_cmd','parser.py',99),
+  ('procedure_def -> PROCEDURE ID DO command_list END','procedure_def',5,'p_procedure_def','parser.py',103),
+  ('procedure_call -> CALL ID','procedure_call',2,'p_procedure_call','parser.py',107),
 ]

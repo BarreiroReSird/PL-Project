@@ -47,8 +47,15 @@ DISCARD TABLE stations;
 -- =============================================
 
 -- Teste B1: 
-IMPORT TABLE observations FROM "observations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
 SELECT * FROM TABLE observations;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+
+-- Teste B2: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT DataHoraObservacao,Id FROM TABLE observations;
 
 -- Limpar estado entre testes
 DISCARD TABLE observations;
