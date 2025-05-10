@@ -1,5 +1,11 @@
 Id,Local,Coordenadas
 E1,Terras de Bouro/Barral (CIM),[-8.31808611,41.70225278]
 E2,Graciosa / Serra das Fontes (DROTRH),[-28.0038,39.0672]
-E3,"Olhão, EPPO",[-7.821,37.033]
-E4,"Setúbal, Areias",[-8.89066111,38.54846667]
+E3,Olhão, EPPO,[-7.821,37.033]
+E4,Setúbal, Areias,[-8.89066111,38.54846667]
+E5,Funchal, Estação Meteorológica,[-16.9083,32.6475]
+E6,Ponta Delgada, Observatório,[-25.6736,37.7412]
+E7,Évora, Estação ICRA,[-7.9135,38.5734]
+E8,Guarda, Torre,[-7.2689,40.5374]
+E9,Porto, Laboratório LEPABE,[-8.5989,41.1784]
+E10,Lisboa, Campus IST,[-9.1383,38.7367]
