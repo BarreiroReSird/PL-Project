@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftANDleftEQNELTGTLEGEAND AS CALL COMMA CREATE DISCARD DO END EQ EXPORT FROM GE GT ID IMPORT JOIN LE LIMIT LPAREN LT NE NUMBER PRINT PROCEDURE RENAME RPAREN SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : command_listcommand_list : command SEMICOLON\n                       | command SEMICOLON command_listcommand : import_cmd\n                  | export_cmd\n                  | discard_cmd\n                  | rename_cmd\n                  | print_cmd\n                  | select_cmd\n                  | create_cmd\n                  | procedure_def\n                  | procedure_callimport_cmd : IMPORT TABLE ID FROM STRINGexport_cmd : EXPORT TABLE ID AS STRINGdiscard_cmd : DISCARD TABLE IDrename_cmd : RENAME TABLE ID IDprint_cmd : PRINT TABLE IDselect_cmd : SELECT select_list FROM table_reference\n                     | SELECT select_list FROM table_reference WHERE conditiontable_reference : ID\n                          | TABLE IDselect_list : STAR\n                      | ID\n                      | select_list COMMA IDcondition : expression\n                    | condition AND conditionexpression : ID LT NUMBER\n                     | ID GT NUMBER\n                     | ID LE NUMBER\n                     | ID GE NUMBER\n                     | ID EQ NUMBER\n                     | ID NE NUMBERcreate_cmd : CREATE TABLE IDprocedure_def : PROCEDURE ID DO command_list ENDprocedure_call : CALL ID'
+_lr_signature = 'leftANDleftEQNELTGTLEGEAND AS CALL COMMA CREATE DISCARD DO END EQ EXPORT FROM GE GT ID IMPORT JOIN LE LIMIT LPAREN LT NE NUMBER PRINT PROCEDURE RENAME RPAREN SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : command_listcommand_list : command SEMICOLON\n                       | command SEMICOLON command_listcommand : import_cmd\n                  | export_cmd\n                  | discard_cmd\n                  | rename_cmd\n                  | print_cmd\n                  | select_cmd\n                  | create_cmd\n                  | procedure_def\n                  | procedure_callimport_cmd : IMPORT TABLE ID FROM STRINGexport_cmd : EXPORT TABLE ID AS STRINGdiscard_cmd : DISCARD TABLE IDrename_cmd : RENAME TABLE ID IDprint_cmd : PRINT TABLE IDselect_cmd : SELECT select_list FROM table_reference\n                     | SELECT select_list FROM table_reference WHERE condition\n                     | SELECT select_list FROM table_reference LIMIT NUMBER\n                     | SELECT select_list FROM table_reference WHERE condition LIMIT NUMBERtable_reference : ID\n                          | TABLE IDselect_list : STAR\n                      | ID\n                      | select_list COMMA IDcondition : expression\n                    | condition AND conditionexpression : ID LT NUMBER\n                     | ID GT NUMBER\n                     | ID LE NUMBER\n                     | ID GE NUMBER\n                     | ID EQ NUMBER\n                     | ID NE NUMBERcreate_cmd : CREATE TABLE IDprocedure_def : PROCEDURE ID DO command_list ENDprocedure_call : CALL ID'
     
-_lr_action_items = {'IMPORT':([0,22,43,],[13,13,13,]),'EXPORT':([0,22,43,],[14,14,14,]),'DISCARD':([0,22,43,],[15,15,15,]),'RENAME':([0,22,43,],[16,16,16,]),'PRINT':([0,22,43,],[17,17,17,]),'SELECT':([0,22,43,],[18,18,18,]),'CREATE':([0,22,43,],[19,19,19,]),'PROCEDURE':([0,22,43,],[20,20,20,]),'CALL':([0,22,43,],[21,21,21,]),'$end':([1,2,22,34,],[0,-1,-2,-3,]),'SEMICOLON':([3,4,5,6,7,8,9,10,11,12,33,37,39,42,46,47,48,52,53,55,56,57,58,67,68,69,70,71,72,73,],[22,-4,-5,-6,-7,-8,-9,-10,-11,-12,-35,-15,-17,-33,-16,-18,-20,-13,-14,-21,-34,-19,-25,-26,-27,-28,-29,-30,-31,-32,]),'TABLE':([13,14,15,16,17,19,40,],[23,24,25,26,27,31,49,]),'STAR':([18,],[29,]),'ID':([18,20,21,23,24,25,26,27,31,38,40,41,49,54,60,],[30,32,33,35,36,37,38,39,42,46,48,50,55,59,59,]),'END':([22,34,51,],[-2,-3,56,]),'FROM':([28,29,30,35,50,],[40,-22,-23,44,-24,]),'COMMA':([28,29,30,50,],[41,-22,-23,-24,]),'DO':([32,],[43,]),'AS':([36,],[45,]),'STRING':([44,45,],[52,53,]),'WHERE':([47,48,55,],[54,-20,-21,]),'AND':([57,58,67,68,69,70,71,72,73,],[60,-25,-26,-27,-28,-29,-30,-31,-32,]),'LT':([59,],[61,]),'GT':([59,],[62,]),'LE':([59,],[63,]),'GE':([59,],[64,]),'EQ':([59,],[65,]),'NE':([59,],[66,]),'NUMBER':([61,62,63,64,65,66,],[68,69,70,71,72,73,]),}
+_lr_action_items = {'IMPORT':([0,22,43,],[13,13,13,]),'EXPORT':([0,22,43,],[14,14,14,]),'DISCARD':([0,22,43,],[15,15,15,]),'RENAME':([0,22,43,],[16,16,16,]),'PRINT':([0,22,43,],[17,17,17,]),'SELECT':([0,22,43,],[18,18,18,]),'CREATE':([0,22,43,],[19,19,19,]),'PROCEDURE':([0,22,43,],[20,20,20,]),'CALL':([0,22,43,],[21,21,21,]),'$end':([1,2,22,34,],[0,-1,-2,-3,]),'SEMICOLON':([3,4,5,6,7,8,9,10,11,12,33,37,39,42,46,47,48,52,53,56,57,58,59,61,70,71,72,73,74,75,76,77,],[22,-4,-5,-6,-7,-8,-9,-10,-11,-12,-37,-15,-17,-35,-16,-18,-22,-13,-14,-23,-36,-19,-27,-20,-21,-28,-29,-30,-31,-32,-33,-34,]),'TABLE':([13,14,15,16,17,19,40,],[23,24,25,26,27,31,49,]),'STAR':([18,],[29,]),'ID':([18,20,21,23,24,25,26,27,31,38,40,41,49,54,63,],[30,32,33,35,36,37,38,39,42,46,48,50,56,60,60,]),'END':([22,34,51,],[-2,-3,57,]),'FROM':([28,29,30,35,50,],[40,-24,-25,44,-26,]),'COMMA':([28,29,30,50,],[41,-24,-25,-26,]),'DO':([32,],[43,]),'AS':([36,],[45,]),'STRING':([44,45,],[52,53,]),'WHERE':([47,48,56,],[54,-22,-23,]),'LIMIT':([47,48,56,58,59,71,72,73,74,75,76,77,],[55,-22,-23,62,-27,-28,-29,-30,-31,-32,-33,-34,]),'NUMBER':([55,62,64,65,66,67,68,69,],[61,70,72,73,74,75,76,77,]),'AND':([58,59,71,72,73,74,75,76,77,],[63,-27,-28,-29,-30,-31,-32,-33,-34,]),'LT':([60,],[64,]),'GT':([60,],[65,]),'LE':([60,],[66,]),'GE':([60,],[67,]),'EQ':([60,],[68,]),'NE':([60,],[69,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'command_list':([0,22,43,],[2,34,51,]),'command':([0,22,43,],[3,3,3,]),'import_cmd':([0,22,43,],[4,4,4,]),'export_cmd':([0,22,43,],[5,5,5,]),'discard_cmd':([0,22,43,],[6,6,6,]),'rename_cmd':([0,22,43,],[7,7,7,]),'print_cmd':([0,22,43,],[8,8,8,]),'select_cmd':([0,22,43,],[9,9,9,]),'create_cmd':([0,22,43,],[10,10,10,]),'procedure_def':([0,22,43,],[11,11,11,]),'procedure_call':([0,22,43,],[12,12,12,]),'select_list':([18,],[28,]),'table_reference':([40,],[47,]),'condition':([54,60,],[57,67,]),'expression':([54,60,],[58,58,]),}
+_lr_goto_items = {'program':([0,],[1,]),'command_list':([0,22,43,],[2,34,51,]),'command':([0,22,43,],[3,3,3,]),'import_cmd':([0,22,43,],[4,4,4,]),'export_cmd':([0,22,43,],[5,5,5,]),'discard_cmd':([0,22,43,],[6,6,6,]),'rename_cmd':([0,22,43,],[7,7,7,]),'print_cmd':([0,22,43,],[8,8,8,]),'select_cmd':([0,22,43,],[9,9,9,]),'create_cmd':([0,22,43,],[10,10,10,]),'procedure_def':([0,22,43,],[11,11,11,]),'procedure_call':([0,22,43,],[12,12,12,]),'select_list':([18,],[28,]),'table_reference':([40,],[47,]),'condition':([54,63,],[58,71,]),'expression':([54,63,],[59,59,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -46,20 +46,22 @@ _lr_productions = [
   ('print_cmd -> PRINT TABLE ID','print_cmd',3,'p_print_cmd','parser.py',74),
   ('select_cmd -> SELECT select_list FROM table_reference','select_cmd',4,'p_select_cmd','parser.py',78),
   ('select_cmd -> SELECT select_list FROM table_reference WHERE condition','select_cmd',6,'p_select_cmd','parser.py',79),
-  ('table_reference -> ID','table_reference',1,'p_table_reference','parser.py',86),
-  ('table_reference -> TABLE ID','table_reference',2,'p_table_reference','parser.py',87),
-  ('select_list -> STAR','select_list',1,'p_select_list','parser.py',91),
-  ('select_list -> ID','select_list',1,'p_select_list','parser.py',92),
-  ('select_list -> select_list COMMA ID','select_list',3,'p_select_list','parser.py',93),
-  ('condition -> expression','condition',1,'p_condition','parser.py',108),
-  ('condition -> condition AND condition','condition',3,'p_condition','parser.py',109),
-  ('expression -> ID LT NUMBER','expression',3,'p_expression','parser.py',116),
-  ('expression -> ID GT NUMBER','expression',3,'p_expression','parser.py',117),
-  ('expression -> ID LE NUMBER','expression',3,'p_expression','parser.py',118),
-  ('expression -> ID GE NUMBER','expression',3,'p_expression','parser.py',119),
-  ('expression -> ID EQ NUMBER','expression',3,'p_expression','parser.py',120),
-  ('expression -> ID NE NUMBER','expression',3,'p_expression','parser.py',121),
-  ('create_cmd -> CREATE TABLE ID','create_cmd',3,'p_create_cmd','parser.py',125),
-  ('procedure_def -> PROCEDURE ID DO command_list END','procedure_def',5,'p_procedure_def','parser.py',129),
-  ('procedure_call -> CALL ID','procedure_call',2,'p_procedure_call','parser.py',133),
+  ('select_cmd -> SELECT select_list FROM table_reference LIMIT NUMBER','select_cmd',6,'p_select_cmd','parser.py',80),
+  ('select_cmd -> SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER','select_cmd',8,'p_select_cmd','parser.py',81),
+  ('table_reference -> ID','table_reference',1,'p_table_reference','parser.py',92),
+  ('table_reference -> TABLE ID','table_reference',2,'p_table_reference','parser.py',93),
+  ('select_list -> STAR','select_list',1,'p_select_list','parser.py',97),
+  ('select_list -> ID','select_list',1,'p_select_list','parser.py',98),
+  ('select_list -> select_list COMMA ID','select_list',3,'p_select_list','parser.py',99),
+  ('condition -> expression','condition',1,'p_condition','parser.py',114),
+  ('condition -> condition AND condition','condition',3,'p_condition','parser.py',115),
+  ('expression -> ID LT NUMBER','expression',3,'p_expression','parser.py',122),
+  ('expression -> ID GT NUMBER','expression',3,'p_expression','parser.py',123),
+  ('expression -> ID LE NUMBER','expression',3,'p_expression','parser.py',124),
+  ('expression -> ID GE NUMBER','expression',3,'p_expression','parser.py',125),
+  ('expression -> ID EQ NUMBER','expression',3,'p_expression','parser.py',126),
+  ('expression -> ID NE NUMBER','expression',3,'p_expression','parser.py',127),
+  ('create_cmd -> CREATE TABLE ID','create_cmd',3,'p_create_cmd','parser.py',131),
+  ('procedure_def -> PROCEDURE ID DO command_list END','procedure_def',5,'p_procedure_def','parser.py',135),
+  ('procedure_call -> CALL ID','procedure_call',2,'p_procedure_call','parser.py',139),
 ]

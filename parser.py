@@ -76,11 +76,17 @@ class CQLParser:
 
     def p_select_cmd(self, p):
         '''select_cmd : SELECT select_list FROM table_reference
-                     | SELECT select_list FROM table_reference WHERE condition'''
+                     | SELECT select_list FROM table_reference WHERE condition
+                     | SELECT select_list FROM table_reference LIMIT NUMBER
+                     | SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER'''
         if len(p) == 5:
-            p[0] = ('SELECT', p[2], p[4], None)
+            p[0] = ('SELECT', p[2], p[4], None, None)
+        elif len(p) == 7 and p[5] == 'LIMIT':
+            p[0] = ('SELECT', p[2], p[4], None, p[6])
+        elif len(p) == 7:
+            p[0] = ('SELECT', p[2], p[4], p[6], None)
         else:
-            p[0] = ('SELECT', p[2], p[4], p[6])
+            p[0] = ('SELECT', p[2], p[4], p[6], p[8])
 
     def p_table_reference(self, p):
         '''table_reference : ID

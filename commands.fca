@@ -69,3 +69,23 @@ SELECT Id, Temperatura FROM observations WHERE Temperatura > 22;
 
 -- Limpar estado entre testes
 DISCARD TABLE observations;
+
+-- Teste B4: Testes para diferentes tipos de comparações
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations WHERE Temperatura = 22;
+SELECT * FROM observations WHERE Temperatura <> 22;
+SELECT * FROM observations WHERE Temperatura > 22;
+SELECT * FROM observations WHERE Temperatura < 22;
+SELECT * FROM observations WHERE Temperatura >= 22;
+SELECT * FROM observations WHERE Temperatura <= 22;
+SELECT * FROM observations WHERE Temperatura >= 20 AND Temperatura <= 25;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations; 
+
+-- Teste B5: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations WHERE Temperatura > 22 LIMIT 1;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;

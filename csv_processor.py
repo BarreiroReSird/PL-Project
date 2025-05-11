@@ -189,40 +189,36 @@ class CSVProcessor:
 
         return f"Table '{table_name}' printed successfully"
 
-    def select_all_raw(self, table_name, condition=None):
+    def select_all_raw(self, table_name, condition=None, limit=None):
         if table_name not in self.tables:
             return f"Error: Table '{table_name}' not found"
 
         table = self.tables[table_name]
-
-        # Imprimir cabeçalhos separados por vírgula
         print(",".join(table['headers']))
-
-        # Imprimir linhas de dados separadas por vírgula
+        count = 0
         for row in table['rows']:
             if self._evaluate_condition(row, condition):
-                print(",".join(str(row.get(header, ''))
-                      for header in table['headers']))
-
+                print(",".join(str(row.get(header, '')) for header in table['headers']))
+                count += 1
+                if limit is not None and count >= int(limit):
+                    break
         return f"Raw data from table '{table_name}'"
 
-    def select_columns(self, table_name, columns, condition=None):
+    def select_columns(self, table_name, columns, condition=None, limit=None):
         if table_name not in self.tables:
             return f"Error: Table '{table_name}' not found"
 
         table = self.tables[table_name]
-
-        # Verificar se todas as colunas existem
         for col in columns:
             if col not in table['headers']:
                 return f"Error: Column '{col}' not found in table '{table_name}'"
 
-        # Imprimir cabeçalhos das colunas selecionadas
         print(",".join(columns))
-
-        # Imprimir linhas de dados apenas com as colunas selecionadas
+        count = 0
         for row in table['rows']:
             if self._evaluate_condition(row, condition):
                 print(",".join(str(row.get(col, '')) for col in columns))
-
+                count += 1
+                if limit is not None and count >= int(limit):
+                    break
         return f"Selected columns {columns} from table '{table_name}'"

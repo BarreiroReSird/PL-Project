@@ -59,13 +59,14 @@ class CQLGrammar:
             columns = cmd[1]
             table_name = cmd[2]
             condition = cmd[3] if len(cmd) > 3 else None
+            limit = cmd[4] if len(cmd) > 4 else None
 
             if columns == '*' or (isinstance(columns, list) and '*' in columns):
-                return self.processor.select_all_raw(table_name, condition)
+                return self.processor.select_all_raw(table_name, condition, limit)
             elif isinstance(columns, list):
-                return self.processor.select_columns(table_name, columns, condition)
+                return self.processor.select_columns(table_name, columns, condition, limit)
             else:
-                return self.processor.select_columns(table_name, [columns], condition)
+                return self.processor.select_columns(table_name, [columns], condition, limit)
 
         else:
             raise ValueError(f"Unknown command: {cmd_type}")
