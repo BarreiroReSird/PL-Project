@@ -258,3 +258,60 @@ class CSVProcessor:
     }
     
         return f"Table '{new_table_name}' created successfully with {len(filtered_rows)} rows"
+    
+    def create_from_join(self, new_table_name, table1_name, table2_name, join_column):
+        print(f"Debug: Joining {table1_name} and {table2_name} on column '{join_column}'")  # Debug
+    
+        if table1_name not in self.tables:
+            return f"Error: Table '{table1_name}' not found"
+        if table2_name not in self.tables:
+            return f"Error: Table '{table2_name}' not found"
+    
+        table1 = self.tables[table1_name]
+        table2 = self.tables[table2_name]
+    
+    # Verificação mais robusta da coluna de join
+        if join_column not in table1['headers']:
+            return f"Error: Join column '{join_column}' not found in table '{table1_name}'"
+        if join_column not in table2['headers']:
+            return f"Error: Join column '{join_column}' not found in table '{table2_name}'"
+    
+    # Cria os cabeçalhos da nova tabela (todos os campos de ambas as tabelas)
+    # Adiciona prefixos para evitar colisão de nomes
+        headers = (
+            [f"{table1_name}.{h}" for h in table1['headers']] +
+            [f"{table2_name}.{h}" for h in table2['headers'] if h != join_column]
+        )
+    
+    # Cria um índice para a tabela2 baseado na coluna de join
+        table2_index = {}
+        for row in table2['rows']:
+            key = row[join_column]
+            if key not in table2_index:
+                table2_index[key] = []
+            table2_index[key].append(row)
+    
+    # Realiza o join
+        joined_rows = []
+        for row1 in table1['rows']:
+            join_key = row1[join_column]
+            if join_key in table2_index:
+                for row2 in table2_index[join_key]:
+                # Combina as linhas
+                    new_row = {}
+                # Adiciona todos os campos da tabela1
+                    for h in table1['headers']:
+                        new_row[f"{table1_name}.{h}"] = row1[h]
+                # Adiciona campos da tabela2 (exceto a coluna de join)
+                    for h in table2['headers']:
+                        if h != join_column:
+                            new_row[f"{table2_name}.{h}"] = row2[h]
+                    joined_rows.append(new_row)
+    
+    # Cria a nova tabela
+        self.tables[new_table_name] = {
+            'headers': headers,
+            'rows': joined_rows
+        }
+    
+        return f"Table '{new_table_name}' created successfully with {len(joined_rows)} rows from JOIN"

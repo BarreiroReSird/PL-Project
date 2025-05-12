@@ -63,6 +63,14 @@ class CQLGrammar:
              limit = cmd[5] if len(cmd) > 5 else None
              return self.processor.create_from_select(new_table_name, table_name, columns, condition, limit)
     
+        elif cmd_type == 'CREATE_JOIN':
+            new_table_name = cmd[1]
+            table1_name = cmd[2]
+            table2_name = cmd[3]
+            join_column = cmd[4]
+            print(f"Debug: Creating join - {new_table_name} from {table1_name} and {table2_name} on {join_column}")  # Debug
+            return self.processor.create_from_join(new_table_name, table1_name, table2_name, join_column)
+        
         elif cmd_type == 'SELECT':
             columns = cmd[1]
             table_name = cmd[2]

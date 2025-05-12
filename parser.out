@@ -2,10 +2,8 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    JOIN
     LPAREN
     RPAREN
-    USING
 
 Grammar
 
@@ -46,27 +44,28 @@ Rule 33    expression -> ID EQ NUMBER
 Rule 34    expression -> ID NE NUMBER
 Rule 35    create_cmd -> CREATE TABLE ID
 Rule 36    create_cmd -> CREATE TABLE ID select_cmd
-Rule 37    procedure_def -> PROCEDURE ID DO command_list END
-Rule 38    procedure_call -> CALL ID
+Rule 37    create_cmd -> CREATE TABLE ID FROM ID JOIN ID USING ID
+Rule 38    procedure_def -> PROCEDURE ID DO command_list END
+Rule 39    procedure_call -> CALL ID
 
 Terminals, with rules where they appear
 
 AND                  : 28
 AS                   : 14
-CALL                 : 38
+CALL                 : 39
 COMMA                : 26
-CREATE               : 35 36
+CREATE               : 35 36 37
 DISCARD              : 15
-DO                   : 37
-END                  : 37
+DO                   : 38
+END                  : 38
 EQ                   : 33
 EXPORT               : 14
-FROM                 : 13 18 19 20 21
+FROM                 : 13 18 19 20 21 37
 GE                   : 32
 GT                   : 30
-ID                   : 13 14 15 16 16 17 22 23 25 26 29 30 31 32 33 34 35 36 37 38
+ID                   : 13 14 15 16 16 17 22 23 25 26 29 30 31 32 33 34 35 36 37 37 37 37 38 39
 IMPORT               : 13
-JOIN                 : 
+JOIN                 : 37
 LE                   : 31
 LIMIT                : 20 21
 LPAREN               : 
@@ -74,22 +73,22 @@ LT                   : 29
 NE                   : 34
 NUMBER               : 20 21 29 30 31 32 33 34
 PRINT                : 17
-PROCEDURE            : 37
+PROCEDURE            : 38
 RENAME               : 16
 RPAREN               : 
 SELECT               : 18 19 20 21
 SEMICOLON            : 2 3
 STAR                 : 24
 STRING               : 13 14
-TABLE                : 13 14 15 16 17 23 35 36
-USING                : 
+TABLE                : 13 14 15 16 17 23 35 36 37
+USING                : 37
 WHERE                : 19 21
 error                : 
 
 Nonterminals, with rules where they appear
 
 command              : 2 3
-command_list         : 1 3 37
+command_list         : 1 3 38
 condition            : 19 21 28 28
 create_cmd           : 10
 discard_cmd          : 6
@@ -133,8 +132,9 @@ state 0
     (21) select_cmd -> . SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER
     (35) create_cmd -> . CREATE TABLE ID
     (36) create_cmd -> . CREATE TABLE ID select_cmd
-    (37) procedure_def -> . PROCEDURE ID DO command_list END
-    (38) procedure_call -> . CALL ID
+    (37) create_cmd -> . CREATE TABLE ID FROM ID JOIN ID USING ID
+    (38) procedure_def -> . PROCEDURE ID DO command_list END
+    (39) procedure_call -> . CALL ID
 
     IMPORT          shift and go to state 13
     EXPORT          shift and go to state 14
@@ -297,20 +297,21 @@ state 19
 
     (35) create_cmd -> CREATE . TABLE ID
     (36) create_cmd -> CREATE . TABLE ID select_cmd
+    (37) create_cmd -> CREATE . TABLE ID FROM ID JOIN ID USING ID
 
     TABLE           shift and go to state 31
 
 
 state 20
 
-    (37) procedure_def -> PROCEDURE . ID DO command_list END
+    (38) procedure_def -> PROCEDURE . ID DO command_list END
 
     ID              shift and go to state 32
 
 
 state 21
 
-    (38) procedure_call -> CALL . ID
+    (39) procedure_call -> CALL . ID
 
     ID              shift and go to state 33
 
@@ -341,8 +342,9 @@ state 22
     (21) select_cmd -> . SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER
     (35) create_cmd -> . CREATE TABLE ID
     (36) create_cmd -> . CREATE TABLE ID select_cmd
-    (37) procedure_def -> . PROCEDURE ID DO command_list END
-    (38) procedure_call -> . CALL ID
+    (37) create_cmd -> . CREATE TABLE ID FROM ID JOIN ID USING ID
+    (38) procedure_def -> . PROCEDURE ID DO command_list END
+    (39) procedure_call -> . CALL ID
 
     $end            reduce using rule 2 (command_list -> command SEMICOLON .)
     END             reduce using rule 2 (command_list -> command SEMICOLON .)
@@ -435,22 +437,23 @@ state 31
 
     (35) create_cmd -> CREATE TABLE . ID
     (36) create_cmd -> CREATE TABLE . ID select_cmd
+    (37) create_cmd -> CREATE TABLE . ID FROM ID JOIN ID USING ID
 
     ID              shift and go to state 42
 
 
 state 32
 
-    (37) procedure_def -> PROCEDURE ID . DO command_list END
+    (38) procedure_def -> PROCEDURE ID . DO command_list END
 
     DO              shift and go to state 43
 
 
 state 33
 
-    (38) procedure_call -> CALL ID .
+    (39) procedure_call -> CALL ID .
 
-    SEMICOLON       reduce using rule 38 (procedure_call -> CALL ID .)
+    SEMICOLON       reduce using rule 39 (procedure_call -> CALL ID .)
 
 
 state 34
@@ -521,19 +524,21 @@ state 42
 
     (35) create_cmd -> CREATE TABLE ID .
     (36) create_cmd -> CREATE TABLE ID . select_cmd
+    (37) create_cmd -> CREATE TABLE ID . FROM ID JOIN ID USING ID
     (18) select_cmd -> . SELECT select_list FROM table_reference
     (19) select_cmd -> . SELECT select_list FROM table_reference WHERE condition
     (20) select_cmd -> . SELECT select_list FROM table_reference LIMIT NUMBER
     (21) select_cmd -> . SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER
 
     SEMICOLON       reduce using rule 35 (create_cmd -> CREATE TABLE ID .)
+    FROM            shift and go to state 52
     SELECT          shift and go to state 18
 
     select_cmd                     shift and go to state 51
 
 state 43
 
-    (37) procedure_def -> PROCEDURE ID DO . command_list END
+    (38) procedure_def -> PROCEDURE ID DO . command_list END
     (2) command_list -> . command SEMICOLON
     (3) command_list -> . command SEMICOLON command_list
     (4) command -> . import_cmd
@@ -556,8 +561,9 @@ state 43
     (21) select_cmd -> . SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER
     (35) create_cmd -> . CREATE TABLE ID
     (36) create_cmd -> . CREATE TABLE ID select_cmd
-    (37) procedure_def -> . PROCEDURE ID DO command_list END
-    (38) procedure_call -> . CALL ID
+    (37) create_cmd -> . CREATE TABLE ID FROM ID JOIN ID USING ID
+    (38) procedure_def -> . PROCEDURE ID DO command_list END
+    (39) procedure_call -> . CALL ID
 
     IMPORT          shift and go to state 13
     EXPORT          shift and go to state 14
@@ -569,7 +575,7 @@ state 43
     PROCEDURE       shift and go to state 20
     CALL            shift and go to state 21
 
-    command_list                   shift and go to state 52
+    command_list                   shift and go to state 53
     command                        shift and go to state 3
     import_cmd                     shift and go to state 4
     export_cmd                     shift and go to state 5
@@ -585,14 +591,14 @@ state 44
 
     (13) import_cmd -> IMPORT TABLE ID FROM . STRING
 
-    STRING          shift and go to state 53
+    STRING          shift and go to state 54
 
 
 state 45
 
     (14) export_cmd -> EXPORT TABLE ID AS . STRING
 
-    STRING          shift and go to state 54
+    STRING          shift and go to state 55
 
 
 state 46
@@ -610,8 +616,8 @@ state 47
     (21) select_cmd -> SELECT select_list FROM table_reference . WHERE condition LIMIT NUMBER
 
     SEMICOLON       reduce using rule 18 (select_cmd -> SELECT select_list FROM table_reference .)
-    WHERE           shift and go to state 55
-    LIMIT           shift and go to state 56
+    WHERE           shift and go to state 56
+    LIMIT           shift and go to state 57
 
 
 state 48
@@ -627,7 +633,7 @@ state 49
 
     (23) table_reference -> TABLE . ID
 
-    ID              shift and go to state 57
+    ID              shift and go to state 58
 
 
 state 50
@@ -647,26 +653,33 @@ state 51
 
 state 52
 
-    (37) procedure_def -> PROCEDURE ID DO command_list . END
+    (37) create_cmd -> CREATE TABLE ID FROM . ID JOIN ID USING ID
 
-    END             shift and go to state 58
+    ID              shift and go to state 59
 
 
 state 53
+
+    (38) procedure_def -> PROCEDURE ID DO command_list . END
+
+    END             shift and go to state 60
+
+
+state 54
 
     (13) import_cmd -> IMPORT TABLE ID FROM STRING .
 
     SEMICOLON       reduce using rule 13 (import_cmd -> IMPORT TABLE ID FROM STRING .)
 
 
-state 54
+state 55
 
     (14) export_cmd -> EXPORT TABLE ID AS STRING .
 
     SEMICOLON       reduce using rule 14 (export_cmd -> EXPORT TABLE ID AS STRING .)
 
 
-state 55
+state 56
 
     (19) select_cmd -> SELECT select_list FROM table_reference WHERE . condition
     (21) select_cmd -> SELECT select_list FROM table_reference WHERE . condition LIMIT NUMBER
@@ -679,19 +692,19 @@ state 55
     (33) expression -> . ID EQ NUMBER
     (34) expression -> . ID NE NUMBER
 
-    ID              shift and go to state 61
+    ID              shift and go to state 63
 
-    condition                      shift and go to state 59
-    expression                     shift and go to state 60
+    condition                      shift and go to state 61
+    expression                     shift and go to state 62
 
-state 56
+state 57
 
     (20) select_cmd -> SELECT select_list FROM table_reference LIMIT . NUMBER
 
-    NUMBER          shift and go to state 62
+    NUMBER          shift and go to state 64
 
 
-state 57
+state 58
 
     (23) table_reference -> TABLE ID .
 
@@ -700,25 +713,32 @@ state 57
     SEMICOLON       reduce using rule 23 (table_reference -> TABLE ID .)
 
 
-state 58
-
-    (37) procedure_def -> PROCEDURE ID DO command_list END .
-
-    SEMICOLON       reduce using rule 37 (procedure_def -> PROCEDURE ID DO command_list END .)
-
-
 state 59
+
+    (37) create_cmd -> CREATE TABLE ID FROM ID . JOIN ID USING ID
+
+    JOIN            shift and go to state 65
+
+
+state 60
+
+    (38) procedure_def -> PROCEDURE ID DO command_list END .
+
+    SEMICOLON       reduce using rule 38 (procedure_def -> PROCEDURE ID DO command_list END .)
+
+
+state 61
 
     (19) select_cmd -> SELECT select_list FROM table_reference WHERE condition .
     (21) select_cmd -> SELECT select_list FROM table_reference WHERE condition . LIMIT NUMBER
     (28) condition -> condition . AND condition
 
     SEMICOLON       reduce using rule 19 (select_cmd -> SELECT select_list FROM table_reference WHERE condition .)
-    LIMIT           shift and go to state 63
-    AND             shift and go to state 64
+    LIMIT           shift and go to state 66
+    AND             shift and go to state 67
 
 
-state 60
+state 62
 
     (27) condition -> expression .
 
@@ -727,7 +747,7 @@ state 60
     SEMICOLON       reduce using rule 27 (condition -> expression .)
 
 
-state 61
+state 63
 
     (29) expression -> ID . LT NUMBER
     (30) expression -> ID . GT NUMBER
@@ -736,29 +756,36 @@ state 61
     (33) expression -> ID . EQ NUMBER
     (34) expression -> ID . NE NUMBER
 
-    LT              shift and go to state 65
-    GT              shift and go to state 66
-    LE              shift and go to state 67
-    GE              shift and go to state 68
-    EQ              shift and go to state 69
-    NE              shift and go to state 70
+    LT              shift and go to state 68
+    GT              shift and go to state 69
+    LE              shift and go to state 70
+    GE              shift and go to state 71
+    EQ              shift and go to state 72
+    NE              shift and go to state 73
 
 
-state 62
+state 64
 
     (20) select_cmd -> SELECT select_list FROM table_reference LIMIT NUMBER .
 
     SEMICOLON       reduce using rule 20 (select_cmd -> SELECT select_list FROM table_reference LIMIT NUMBER .)
 
 
-state 63
+state 65
+
+    (37) create_cmd -> CREATE TABLE ID FROM ID JOIN . ID USING ID
+
+    ID              shift and go to state 74
+
+
+state 66
 
     (21) select_cmd -> SELECT select_list FROM table_reference WHERE condition LIMIT . NUMBER
 
-    NUMBER          shift and go to state 71
+    NUMBER          shift and go to state 75
 
 
-state 64
+state 67
 
     (28) condition -> condition AND . condition
     (27) condition -> . expression
@@ -770,61 +797,68 @@ state 64
     (33) expression -> . ID EQ NUMBER
     (34) expression -> . ID NE NUMBER
 
-    ID              shift and go to state 61
+    ID              shift and go to state 63
 
-    condition                      shift and go to state 72
-    expression                     shift and go to state 60
-
-state 65
-
-    (29) expression -> ID LT . NUMBER
-
-    NUMBER          shift and go to state 73
-
-
-state 66
-
-    (30) expression -> ID GT . NUMBER
-
-    NUMBER          shift and go to state 74
-
-
-state 67
-
-    (31) expression -> ID LE . NUMBER
-
-    NUMBER          shift and go to state 75
-
+    condition                      shift and go to state 76
+    expression                     shift and go to state 62
 
 state 68
 
-    (32) expression -> ID GE . NUMBER
-
-    NUMBER          shift and go to state 76
-
-
-state 69
-
-    (33) expression -> ID EQ . NUMBER
+    (29) expression -> ID LT . NUMBER
 
     NUMBER          shift and go to state 77
 
 
-state 70
+state 69
 
-    (34) expression -> ID NE . NUMBER
+    (30) expression -> ID GT . NUMBER
 
     NUMBER          shift and go to state 78
 
 
+state 70
+
+    (31) expression -> ID LE . NUMBER
+
+    NUMBER          shift and go to state 79
+
+
 state 71
+
+    (32) expression -> ID GE . NUMBER
+
+    NUMBER          shift and go to state 80
+
+
+state 72
+
+    (33) expression -> ID EQ . NUMBER
+
+    NUMBER          shift and go to state 81
+
+
+state 73
+
+    (34) expression -> ID NE . NUMBER
+
+    NUMBER          shift and go to state 82
+
+
+state 74
+
+    (37) create_cmd -> CREATE TABLE ID FROM ID JOIN ID . USING ID
+
+    USING           shift and go to state 83
+
+
+state 75
 
     (21) select_cmd -> SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER .
 
     SEMICOLON       reduce using rule 21 (select_cmd -> SELECT select_list FROM table_reference WHERE condition LIMIT NUMBER .)
 
 
-state 72
+state 76
 
     (28) condition -> condition AND condition .
     (28) condition -> condition . AND condition
@@ -833,10 +867,10 @@ state 72
     AND             reduce using rule 28 (condition -> condition AND condition .)
     SEMICOLON       reduce using rule 28 (condition -> condition AND condition .)
 
-  ! AND             [ shift and go to state 64 ]
+  ! AND             [ shift and go to state 67 ]
 
 
-state 73
+state 77
 
     (29) expression -> ID LT NUMBER .
 
@@ -845,7 +879,7 @@ state 73
     SEMICOLON       reduce using rule 29 (expression -> ID LT NUMBER .)
 
 
-state 74
+state 78
 
     (30) expression -> ID GT NUMBER .
 
@@ -854,7 +888,7 @@ state 74
     SEMICOLON       reduce using rule 30 (expression -> ID GT NUMBER .)
 
 
-state 75
+state 79
 
     (31) expression -> ID LE NUMBER .
 
@@ -863,7 +897,7 @@ state 75
     SEMICOLON       reduce using rule 31 (expression -> ID LE NUMBER .)
 
 
-state 76
+state 80
 
     (32) expression -> ID GE NUMBER .
 
@@ -872,7 +906,7 @@ state 76
     SEMICOLON       reduce using rule 32 (expression -> ID GE NUMBER .)
 
 
-state 77
+state 81
 
     (33) expression -> ID EQ NUMBER .
 
@@ -881,11 +915,25 @@ state 77
     SEMICOLON       reduce using rule 33 (expression -> ID EQ NUMBER .)
 
 
-state 78
+state 82
 
     (34) expression -> ID NE NUMBER .
 
     LIMIT           reduce using rule 34 (expression -> ID NE NUMBER .)
     AND             reduce using rule 34 (expression -> ID NE NUMBER .)
     SEMICOLON       reduce using rule 34 (expression -> ID NE NUMBER .)
+
+
+state 83
+
+    (37) create_cmd -> CREATE TABLE ID FROM ID JOIN ID USING . ID
+
+    ID              shift and go to state 84
+
+
+state 84
+
+    (37) create_cmd -> CREATE TABLE ID FROM ID JOIN ID USING ID .
+
+    SEMICOLON       reduce using rule 37 (create_cmd -> CREATE TABLE ID FROM ID JOIN ID USING ID .)
 
