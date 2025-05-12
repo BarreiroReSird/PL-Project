@@ -10,6 +10,7 @@ class CQLGrammar:
         self.lexer = CQLLexer()
         self.parser = CQLParser(self.lexer)
         self.processor = CSVProcessor()
+        self.procedures = {}
 
     def build(self):
         self.parser.build()
@@ -71,6 +72,27 @@ class CQLGrammar:
             print(f"Debug: Creating join - {new_table_name} from {table1_name} and {table2_name} on {join_column}")  # Debug
             return self.processor.create_from_join(new_table_name, table1_name, table2_name, join_column)
         
+        if cmd_type == 'PROCEDURE_DEF':
+            proc_name = cmd[1]
+            commands = cmd[2]
+            self.procedures[proc_name] = commands
+            return f"Procedure '{proc_name}' defined successfully"
+
+        elif cmd_type == 'PROCEDURE_CALL':
+            proc_name = cmd[1]
+            if proc_name not in self.procedures:
+                return f"Error: Procedure '{proc_name}' not found"
+        
+            results = []
+            for command in self.procedures[proc_name]:
+                try:
+                    result = self.execute_command(command)
+                    if result is not None:
+                        results.append(result)
+                except Exception as e:
+                    results.append(f"Error in command: {str(e)}")
+            return results if len(results) > 0 else "Procedure executed successfully"
+        
         elif cmd_type == 'SELECT':
             columns = cmd[1]
             table_name = cmd[2]
@@ -86,3 +108,4 @@ class CQLGrammar:
 
         else:
             raise ValueError(f"Unknown command: {cmd_type}")
+        
