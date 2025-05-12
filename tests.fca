@@ -1,4 +1,4 @@
--- Teste B3: 
+-- Teste C2: 
 IMPORT TABLE stations FROM "stations.csv";
 IMPORT TABLE observations FROM "observationsV2.csv";
 SELECT * FROM TABLE observations;

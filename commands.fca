@@ -89,3 +89,35 @@ SELECT * FROM observations WHERE Temperatura > 22 LIMIT 1;
 
 -- Limpar estado entre testes
 DISCARD TABLE observations;
+
+-- =============================================
+-- TESTES DA FASE C
+-- =============================================
+
+-- Teste C1:
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE hottest SELECT * FROM observations WHERE Temperatura > 22;
+PRINT TABLE hottest;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+DISCARD TABLE hottest;
+
+-- Teste C2:
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE completed FROM estacoes JOIN observacoes USING(Id);
+PRINT TABLE completed;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+DISCARD TABLE completed;
+
+-- =============================================
+-- TESTES DA FASE D
+-- =============================================
+
+-- Teste D1:
+
+-- =============================================
+-- TESTES GERAIS
+-- =============================================
