@@ -55,6 +55,14 @@ class CQLGrammar:
             table_name = cmd[1]
             return self.processor.print_table(table_name)
 
+        elif cmd_type == 'CREATE_SELECT':
+             new_table_name = cmd[1]
+             columns = cmd[2]
+             table_name = cmd[3]
+             condition = cmd[4] if len(cmd) > 4 else None
+             limit = cmd[5] if len(cmd) > 5 else None
+             return self.processor.create_from_select(new_table_name, table_name, columns, condition, limit)
+    
         elif cmd_type == 'SELECT':
             columns = cmd[1]
             table_name = cmd[2]

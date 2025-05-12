@@ -222,3 +222,39 @@ class CSVProcessor:
                 if limit is not None and count >= int(limit):
                     break
         return f"Selected columns {columns} from table '{table_name}'"
+
+    def create_from_select(self, new_table_name, source_table, columns, condition=None, limit=None):
+        if source_table not in self.tables:
+            return f"Error: Source table '{source_table}' not found"
+    
+        source_data = self.tables[source_table]
+    
+    # Verifica colunas se não for *
+        if columns != '*' and isinstance(columns, list):
+            for col in columns:
+                if col not in source_data['headers']:
+                 return f"Error: Column '{col}' not found in source table"
+    
+    # Filtra as colunas se necessário
+        if columns == '*':
+            headers = source_data['headers']
+        else:
+         headers = columns if isinstance(columns, list) else [columns]
+    
+    # Filtra as linhas baseado na condição
+        filtered_rows = []
+        for row in source_data['rows']:
+             if self._evaluate_condition(row, condition):
+                filtered_rows.append(row)
+    
+    # Aplica o limite se existir
+        if limit is not None:
+            filtered_rows = filtered_rows[:int(limit)]
+    
+    # Cria a nova tabela
+        self.tables[new_table_name] = {
+        'headers': headers,
+        'rows': filtered_rows
+    }
+    
+        return f"Table '{new_table_name}' created successfully with {len(filtered_rows)} rows"

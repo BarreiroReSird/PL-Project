@@ -128,8 +128,15 @@ class CQLParser:
         p[0] = (p[2], p[1], p[3])
 
     def p_create_cmd(self, p):
-        'create_cmd : CREATE TABLE ID'
-        p[0] = ('CREATE', p[3])
+        '''create_cmd : CREATE TABLE ID
+                 | CREATE TABLE ID select_cmd'''
+        if len(p) == 4:
+            p[0] = ('CREATE', p[3])
+        else:
+        # Transforma o SELECT em um comando normal, mas marcado para criação de tabela
+            select_cmd = p[4]
+        select_cmd = ('CREATE_SELECT', p[3], *select_cmd[1:])  # Adiciona o nome da nova tabela
+        p[0] = select_cmd
 
     def p_procedure_def(self, p):
         'procedure_def : PROCEDURE ID DO command_list END'

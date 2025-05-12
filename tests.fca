@@ -4,3 +4,5 @@ SELECT * FROM TABLE observations;
 SELECT * FROM observations WHERE Temperatura > 22;
 SELECT * FROM observations WHERE Temperatura > 22 AND Temperatura < 32;
 SELECT Id, Temperatura FROM observations WHERE Temperatura > 22;
+CREATE TABLE mais_quentes SELECT * FROM observations WHERE Temperatura > 22;
+PRINT TABLE mais_quentes;
