@@ -1,0 +1,143 @@
+-- =============================================
+-- LISTA DE COMANDOS
+-- =============================================
+
+-- =============================================
+-- TESTES DA FASE A (Manipulação de Tabelas)
+-- =============================================
+
+-- Teste A1: Importar tabela de um ficheiro CSV
+IMPORT TABLE stations FROM "stations.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- Teste A2: Exportar tabela para um ficheiro CSV
+IMPORT TABLE stations FROM "stations.csv";
+EXPORT TABLE stations AS "stationsExp.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- Teste A3: Descartar tabela da memória
+IMPORT TABLE stations FROM "stations.csv";
+DISCARD TABLE stations;
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- Teste A4: Renomear tabela
+IMPORT TABLE stations FROM "stations.csv";
+RENAME TABLE stations stationsRenamed;
+EXPORT TABLE stationsRenamed AS "stationsRenamedExp.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+DISCARD TABLE stationsRenamed;
+
+-- Teste A5: Imprimir tabela no terminal
+IMPORT TABLE stations FROM "stations.csv";
+PRINT TABLE stations;
+
+-- Limpar estado entre testes
+DISCARD TABLE stations;
+
+-- =============================================
+-- TESTES DA FASE B (Consultas)
+-- =============================================
+
+-- Teste B1: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM TABLE observations;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+
+-- Teste B2: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT DataHoraObservacao,Id FROM TABLE observations;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+
+-- Teste B3: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM TABLE observations;
+SELECT * FROM observations WHERE Temperatura > 22;
+SELECT * FROM observations WHERE Temperatura > 22 AND Temperatura < 32;
+SELECT Id, Temperatura FROM observations WHERE Temperatura > 22;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+
+-- Teste B4: Testes para diferentes tipos de comparações
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations WHERE Temperatura = 22;
+SELECT * FROM observations WHERE Temperatura <> 22;
+SELECT * FROM observations WHERE Temperatura > 22;
+SELECT * FROM observations WHERE Temperatura < 22;
+SELECT * FROM observations WHERE Temperatura >= 22;
+SELECT * FROM observations WHERE Temperatura <= 22;
+SELECT * FROM observations WHERE Temperatura >= 20 AND Temperatura <= 25;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations; 
+
+-- Teste B5: 
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations WHERE Temperatura > 22 LIMIT 1;
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+
+-- =============================================
+-- TESTES DA FASE C
+-- =============================================
+
+-- Teste C1:
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE hottest SELECT * FROM observations WHERE Temperatura > 22;
+PRINT TABLE hottest;
+EXPORT TABLE hottest AS "hottestExp.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+DISCARD TABLE hottest;
+
+-- Teste C2:
+IMPORT TABLE stations FROM "stations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE completed FROM stations JOIN observations USING Id;
+PRINT TABLE completed;
+EXPORT TABLE completed AS "completedExp.csv";
+
+-- Limpar estado entre testes
+DISCARD TABLE observations;
+DISCARD TABLE completed;
+
+-- =============================================
+-- TESTES DA FASE D
+-- =============================================
+
+-- Teste D1:
+IMPORT TABLE stations FROM "stations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
+PROCEDURE update_observations DO
+  CREATE TABLE hottest SELECT * FROM observations WHERE Temperatura > 22;
+  PRINT TABLE hottest;
+  CREATE TABLE completed FROM stations JOIN observations USING Id;
+  PRINT TABLE completed;
+END;
+CALL update_observations;
+
+-- =============================================
+-- TESTES DA FASE E
+-- =============================================
+
+-- E1: Comentarios simples Funcionais
+
+{-
+E2: Comentarios
+Multi-linha
+Funcionais
+-}

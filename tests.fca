@@ -1,0 +1,50 @@
+-- =============================================
+-- TESTES EXTRA: ERROS E LIMITES
+-- =============================================
+
+-- Teste F1: Exportar tabela inexistente
+EXPORT TABLE nonexistentTable AS "doesntExist.csv";
+
+-- Teste F2: Selecionar coluna inexistente
+IMPORT TABLE stations FROM "stations.csv";
+SELECT InvalidName FROM stations;
+DISCARD TABLE stations;
+
+-- Teste F3: Renomear para nome já existente
+IMPORT TABLE stations FROM "stations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
+RENAME TABLE stations observations;
+DISCARD TABLE stations;
+DISCARD TABLE observations;
+
+-- Teste F4: JOIN com coluna inexistente
+IMPORT TABLE stations FROM "stations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE errorJoin FROM stations JOIN observations USING InvalidColumn;
+DISCARD TABLE stations;
+DISCARD TABLE observations;
+
+-- Teste F5: Limite maior que o número de linhas
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations LIMIT 100;
+DISCARD TABLE observations;
+
+-- Teste F6: Limite igual a zero
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT * FROM observations LIMIT 0;
+DISCARD TABLE observations;
+
+-- Teste F7: SELECT com várias colunas e condição
+IMPORT TABLE observations FROM "observationsV2.csv";
+SELECT Id,Temperature,Humidity FROM observations WHERE Temperature >= 18 AND Humidity < 50;
+DISCARD TABLE observations;
+
+-- Teste F8: CREATE TABLE com SELECT limitado
+IMPORT TABLE observations FROM "observationsV2.csv";
+CREATE TABLE top1 SELECT * FROM observations LIMIT 1;
+PRINT TABLE top1;
+DISCARD TABLE observations;
+DISCARD TABLE top1;
+
+-- Teste F9: PROCEDURE não existente
+CALL nonexistent_proc;
