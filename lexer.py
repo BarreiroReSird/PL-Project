@@ -7,14 +7,12 @@ import ply.lex as lex
 class CQLLexer:
     def __init__(self):
         self.lexer = lex.lex(module=self)
-        self.lexer.comment_level = 0  # For nested comment tracking
+        self.lexer.comment_level = 0
 
-    # Lexer states
     states = (
-        ('multicomment', 'exclusive'),  # For multi-line comments
+        ('multicomment', 'exclusive'),
     )
 
-    # Lista de tokens
     tokens = (
         'IMPORT', 'EXPORT', 'DISCARD', 'RENAME', 'PRINT',
         'SELECT', 'FROM', 'WHERE', 'CREATE', 'TABLE',
@@ -25,26 +23,20 @@ class CQLLexer:
         'LPAREN', 'RPAREN'
     )
 
-    # Regra
     t_STAR = r'\*'
+    t_ignore = ' \t'
 
-    # Regular tokens (initial state)
-    t_ignore = ' \t'  # Ignore whitespace
-
-    # Single-line comments
     def t_COMMENT(self, t):
         r'--[^\n]*'
-        pass  # Complete ignore
+        pass
 
-    # Multi-line comment start
     def t_MULTICOMMENT_START(self, t):
         r'\{-'
         t.lexer.begin('multicomment')
         t.lexer.comment_level = 1
-        pass  # Don't return a token
+        pass
 
-    # Multi-line comment rules
-    t_multicomment_ignore = ''  # We'll handle everything manually
+    t_multicomment_ignore = ''
 
     def t_multicomment_CONTENT(self, t):
         r'[^\{\}-]+'
@@ -70,7 +62,6 @@ class CQLLexer:
         print(f"Illegal character in comment: '{t.value[0]}'")
         t.lexer.skip(1)
 
-    # Simple tokens
     t_COMMA = r','
     t_SEMICOLON = r';'
     t_EQ = r'='
@@ -82,7 +73,6 @@ class CQLLexer:
     t_LPAREN = r'\('
     t_RPAREN = r'\)'
 
-    # Keywords dictionary (case-insensitive)
     keywords = {
         'import': 'IMPORT',
         'export': 'EXPORT',
@@ -117,7 +107,7 @@ class CQLLexer:
 
     def t_STRING(self, t):
         r'\"([^\\\"]|\\.)*\"'
-        t.value = t.value[1:-1]  # Remove quotes
+        t.value = t.value[1:-1]
         return t
 
     def t_newline(self, t):

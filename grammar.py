@@ -82,7 +82,6 @@ class CQLGrammar:
             table1_name = cmd[2]
             table2_name = cmd[3]
             join_column = cmd[4]
-            # Debug
             print(
                 f"Debug: Creating join - {new_table_name} from {table1_name} and {table2_name} on {join_column}")
             return self.processor.create_from_join(new_table_name, table1_name, table2_name, join_column)

@@ -13,13 +13,11 @@ class CQLParser:
     def parse(self, text):
         return self.parser.parse(text, lexer=self.lexer.lexer)
 
-    # Precedência dos operadores
     precedence = (
         ('left', 'AND'),
         ('left', 'EQ', 'NE', 'LT', 'GT', 'LE', 'GE'),
     )
 
-    # Regras gramaticais
     def p_program(self, p):
         '''program : command_list'''
         p[0] = ('PROGRAM', p[1])
@@ -44,7 +42,6 @@ class CQLParser:
                   | procedure_call'''
         p[0] = p[1]
 
-    # Comandos de configuração de tabelas
     def p_import_cmd(self, p):
         'import_cmd : IMPORT TABLE ID FROM STRING'
         p[0] = ('IMPORT', p[3], p[5])
@@ -99,16 +96,16 @@ class CQLParser:
                       | select_list COMMA ID'''
         if len(p) == 2:
             if p[1] == '*':
-                p[0] = '*'  # Caso especial para *
+                p[0] = '*'  
             else:
-                p[0] = [p[1]]  # Para um único ID
+                p[0] = [p[1]]  
         else:
             if p[1] == '*':
-                p[0] = '*'  # Mantém * se estiver presente
+                p[0] = '*'  
             elif isinstance(p[1], list):
-                p[0] = p[1] + [p[3]]  # Adiciona mais um ID à lista
+                p[0] = p[1] + [p[3]]  
             else:
-                p[0] = [p[1], p[3]]  # Cria lista com dois IDs
+                p[0] = [p[1], p[3]]  
 
     def p_condition(self, p):
         '''condition : expression
@@ -138,7 +135,7 @@ class CQLParser:
             select_cmd = ('CREATE_SELECT', p[3], *select_cmd[1:])
             p[0] = select_cmd
         else:
-            p[0] = ('CREATE_JOIN', p[3], p[5], p[7], p[9])  # (new_table, table1, table2, join_column)
+            p[0] = ('CREATE_JOIN', p[3], p[5], p[7], p[9])  
 
     def p_procedure_def(self, p):
         'procedure_def : PROCEDURE ID DO command_list END'

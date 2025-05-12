@@ -9,7 +9,6 @@ class CSVProcessor:
         self.tables = {}
 
     def _parse_line(self, line):
-        """Parseia uma linha manualmente para tratar colchetes corretamente"""
         in_quotes = False
         in_brackets = False
         current_field = []
@@ -45,7 +44,6 @@ class CSVProcessor:
             current_field.append(char)
             i += 1
 
-        # Adiciona o último campo
         if current_field:
             fields.append(''.join(current_field))
 
@@ -83,17 +81,13 @@ class CSVProcessor:
     def import_table(self, table_name, filename):
         try:
             with open(filename, 'r', encoding='utf-8') as file:
-                # Ignorar linhas de comentário
-                lines = [line.strip() for line in file if not line.strip(
-                ).startswith('#') and line.strip()]
+                lines = [line.strip() for line in file if not line.strip().startswith('#') and line.strip()]
 
                 if not lines:
                     return False
 
-                # Processar cabeçalhos
                 headers = self._parse_line(lines[0])
 
-                # Processar linhas de dados
                 rows = []
                 for line in lines[1:]:
                     if not line:
@@ -101,7 +95,7 @@ class CSVProcessor:
 
                     values = self._parse_line(line)
                     if len(values) != len(headers):
-                        continue  # Ignorar linhas mal formadas
+                        continue
 
                     row = dict(zip(headers, values))
                     rows.append(row)
@@ -124,10 +118,8 @@ class CSVProcessor:
             with open(filename, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
 
-                # Escrever cabeçalhos
                 writer.writerow(self.tables[table_name]['headers'])
 
-                # Escrever linhas de dados
                 for row in self.tables[table_name]['rows']:
                     writer.writerow(
                         [row.get(header, '')
@@ -162,7 +154,6 @@ class CSVProcessor:
 
         table = self.tables[table_name]
 
-        # Determinar a largura máxima de cada coluna
         col_widths = []
         for header in table['headers']:
             max_width = len(header)
@@ -170,18 +161,15 @@ class CSVProcessor:
                 value = str(row.get(header, ''))
                 if len(value) > max_width:
                     max_width = len(value)
-            col_widths.append(max_width + 2)  # Adiciona um pouco de espaço
+            col_widths.append(max_width + 2)
 
-        # Imprimir cabeçalhos
         header_line = " | ".join(
             f"{header:<{col_widths[i]}}"
             for i, header in enumerate(table['headers']))
         print(header_line)
 
-        # Imprimir separador
         print("-" * len(header_line))
 
-        # Imprimir linhas de dados
         for row in table['rows']:
             print(" | ".join(
                 f"{str(row.get(header, '')):<{col_widths[i]}}"
@@ -230,29 +218,24 @@ class CSVProcessor:
 
         source_data = self.tables[source_table]
 
-        # Verifica colunas se não for *
         if columns != '*' and isinstance(columns, list):
             for col in columns:
                 if col not in source_data['headers']:
                     return f"Error: Column '{col}' not found in source table"
 
-        # Filtra as colunas se necessário
         if columns == '*':
             headers = source_data['headers']
         else:
             headers = columns if isinstance(columns, list) else [columns]
 
-        # Filtra as linhas baseado na condição
         filtered_rows = []
         for row in source_data['rows']:
             if self._evaluate_condition(row, condition):
                 filtered_rows.append(row)
 
-        # Aplica o limite se existir
         if limit is not None:
             filtered_rows = filtered_rows[:int(limit)]
 
-        # Cria a nova tabela
         self.tables[new_table_name] = {
             'headers': headers,
             'rows': filtered_rows
@@ -261,9 +244,7 @@ class CSVProcessor:
         return f"Table '{new_table_name}' created successfully with {len(filtered_rows)} rows"
 
     def create_from_join(self, new_table_name, table1_name, table2_name, join_column):
-        # Debug
-        print(
-            f"Debug: Joining {table1_name} and {table2_name} on column '{join_column}'")
+        print(f"Debug: Joining {table1_name} and {table2_name} on column '{join_column}'")
 
         if table1_name not in self.tables:
             return f"Error: Table '{table1_name}' not found"
@@ -273,20 +254,16 @@ class CSVProcessor:
         table1 = self.tables[table1_name]
         table2 = self.tables[table2_name]
 
-        # Verificação mais robusta da coluna de join
         if join_column not in table1['headers']:
             return f"Error: Join column '{join_column}' not found in table '{table1_name}'"
         if join_column not in table2['headers']:
             return f"Error: Join column '{join_column}' not found in table '{table2_name}'"
 
-        # Cria os cabeçalhos da nova tabela (todos os campos de ambas as tabelas)
-        # Adiciona prefixos para evitar colisão de nomes
         headers = (
             [f"{table1_name}.{h}" for h in table1['headers']] +
             [f"{table2_name}.{h}" for h in table2['headers'] if h != join_column]
         )
 
-        # Cria um índice para a tabela2 baseado na coluna de join
         table2_index = {}
         for row in table2['rows']:
             key = row[join_column]
@@ -294,24 +271,19 @@ class CSVProcessor:
                 table2_index[key] = []
             table2_index[key].append(row)
 
-        # Realiza o join
         joined_rows = []
         for row1 in table1['rows']:
             join_key = row1[join_column]
             if join_key in table2_index:
                 for row2 in table2_index[join_key]:
-                    # Combina as linhas
                     new_row = {}
-                # Adiciona todos os campos da tabela1
                     for h in table1['headers']:
                         new_row[f"{table1_name}.{h}"] = row1[h]
-                # Adiciona campos da tabela2 (exceto a coluna de join)
                     for h in table2['headers']:
                         if h != join_column:
                             new_row[f"{table2_name}.{h}"] = row2[h]
                     joined_rows.append(new_row)
 
-        # Cria a nova tabela
         self.tables[new_table_name] = {
             'headers': headers,
             'rows': joined_rows
