@@ -56,43 +56,6 @@ class CQLGrammar:
             table_name = cmd[1]
             return self.processor.print_table(table_name)
 
-        elif cmd_type == 'CREATE_SELECT':
-             new_table_name = cmd[1]
-             columns = cmd[2]
-             table_name = cmd[3]
-             condition = cmd[4] if len(cmd) > 4 else None
-             limit = cmd[5] if len(cmd) > 5 else None
-             return self.processor.create_from_select(new_table_name, table_name, columns, condition, limit)
-    
-        elif cmd_type == 'CREATE_JOIN':
-            new_table_name = cmd[1]
-            table1_name = cmd[2]
-            table2_name = cmd[3]
-            join_column = cmd[4]
-            print(f"Debug: Creating join - {new_table_name} from {table1_name} and {table2_name} on {join_column}")  # Debug
-            return self.processor.create_from_join(new_table_name, table1_name, table2_name, join_column)
-        
-        if cmd_type == 'PROCEDURE_DEF':
-            proc_name = cmd[1]
-            commands = cmd[2]
-            self.procedures[proc_name] = commands
-            return f"Procedure '{proc_name}' defined successfully"
-
-        elif cmd_type == 'PROCEDURE_CALL':
-            proc_name = cmd[1]
-            if proc_name not in self.procedures:
-                return f"Error: Procedure '{proc_name}' not found"
-        
-            results = []
-            for command in self.procedures[proc_name]:
-                try:
-                    result = self.execute_command(command)
-                    if result is not None:
-                        results.append(result)
-                except Exception as e:
-                    results.append(f"Error in command: {str(e)}")
-            return results if len(results) > 0 else "Procedure executed successfully"
-        
         elif cmd_type == 'SELECT':
             columns = cmd[1]
             table_name = cmd[2]
@@ -106,6 +69,44 @@ class CQLGrammar:
             else:
                 return self.processor.select_columns(table_name, [columns], condition, limit)
 
+        elif cmd_type == 'CREATE_SELECT':
+            new_table_name = cmd[1]
+            columns = cmd[2]
+            table_name = cmd[3]
+            condition = cmd[4] if len(cmd) > 4 else None
+            limit = cmd[5] if len(cmd) > 5 else None
+            return self.processor.create_from_select(new_table_name, table_name, columns, condition, limit)
+
+        elif cmd_type == 'CREATE_JOIN':
+            new_table_name = cmd[1]
+            table1_name = cmd[2]
+            table2_name = cmd[3]
+            join_column = cmd[4]
+            # Debug
+            print(
+                f"Debug: Creating join - {new_table_name} from {table1_name} and {table2_name} on {join_column}")
+            return self.processor.create_from_join(new_table_name, table1_name, table2_name, join_column)
+
+        if cmd_type == 'PROCEDURE_DEF':
+            proc_name = cmd[1]
+            commands = cmd[2]
+            self.procedures[proc_name] = commands
+            return f"Procedure '{proc_name}' defined successfully"
+
+        elif cmd_type == 'PROCEDURE_CALL':
+            proc_name = cmd[1]
+            if proc_name not in self.procedures:
+                return f"Error: Procedure '{proc_name}' not found"
+
+            results = []
+            for command in self.procedures[proc_name]:
+                try:
+                    result = self.execute_command(command)
+                    if result is not None:
+                        results.append(result)
+                except Exception as e:
+                    results.append(f"Error in command: {str(e)}")
+            return results if len(results) > 0 else "Procedure executed successfully"
+
         else:
             raise ValueError(f"Unknown command: {cmd_type}")
-        

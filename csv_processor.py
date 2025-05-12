@@ -198,7 +198,8 @@ class CSVProcessor:
         count = 0
         for row in table['rows']:
             if self._evaluate_condition(row, condition):
-                print(",".join(str(row.get(header, '')) for header in table['headers']))
+                print(",".join(str(row.get(header, ''))
+                      for header in table['headers']))
                 count += 1
                 if limit is not None and count >= int(limit):
                     break
@@ -226,78 +227,80 @@ class CSVProcessor:
     def create_from_select(self, new_table_name, source_table, columns, condition=None, limit=None):
         if source_table not in self.tables:
             return f"Error: Source table '{source_table}' not found"
-    
+
         source_data = self.tables[source_table]
-    
-    # Verifica colunas se não for *
+
+        # Verifica colunas se não for *
         if columns != '*' and isinstance(columns, list):
             for col in columns:
                 if col not in source_data['headers']:
-                 return f"Error: Column '{col}' not found in source table"
-    
-    # Filtra as colunas se necessário
+                    return f"Error: Column '{col}' not found in source table"
+
+        # Filtra as colunas se necessário
         if columns == '*':
             headers = source_data['headers']
         else:
-         headers = columns if isinstance(columns, list) else [columns]
-    
-    # Filtra as linhas baseado na condição
+            headers = columns if isinstance(columns, list) else [columns]
+
+        # Filtra as linhas baseado na condição
         filtered_rows = []
         for row in source_data['rows']:
-             if self._evaluate_condition(row, condition):
+            if self._evaluate_condition(row, condition):
                 filtered_rows.append(row)
-    
-    # Aplica o limite se existir
+
+        # Aplica o limite se existir
         if limit is not None:
             filtered_rows = filtered_rows[:int(limit)]
-    
-    # Cria a nova tabela
+
+        # Cria a nova tabela
         self.tables[new_table_name] = {
-        'headers': headers,
-        'rows': filtered_rows
-    }
-    
+            'headers': headers,
+            'rows': filtered_rows
+        }
+
         return f"Table '{new_table_name}' created successfully with {len(filtered_rows)} rows"
-    
+
     def create_from_join(self, new_table_name, table1_name, table2_name, join_column):
-        print(f"Debug: Joining {table1_name} and {table2_name} on column '{join_column}'")  # Debug
-    
+        # Debug
+        print(
+            f"Debug: Joining {table1_name} and {table2_name} on column '{join_column}'")
+
         if table1_name not in self.tables:
             return f"Error: Table '{table1_name}' not found"
         if table2_name not in self.tables:
             return f"Error: Table '{table2_name}' not found"
-    
+
         table1 = self.tables[table1_name]
         table2 = self.tables[table2_name]
-    
-    # Verificação mais robusta da coluna de join
+
+        # Verificação mais robusta da coluna de join
         if join_column not in table1['headers']:
             return f"Error: Join column '{join_column}' not found in table '{table1_name}'"
         if join_column not in table2['headers']:
             return f"Error: Join column '{join_column}' not found in table '{table2_name}'"
-    
-    # Cria os cabeçalhos da nova tabela (todos os campos de ambas as tabelas)
-    # Adiciona prefixos para evitar colisão de nomes
+
+        # Cria os cabeçalhos da nova tabela (todos os campos de ambas as tabelas)
+        # Adiciona prefixos para evitar colisão de nomes
         headers = (
             [f"{table1_name}.{h}" for h in table1['headers']] +
             [f"{table2_name}.{h}" for h in table2['headers'] if h != join_column]
         )
-    
-    # Cria um índice para a tabela2 baseado na coluna de join
+
+        # Cria um índice para a tabela2 baseado na coluna de join
         table2_index = {}
         for row in table2['rows']:
             key = row[join_column]
             if key not in table2_index:
                 table2_index[key] = []
             table2_index[key].append(row)
-    
-    # Realiza o join
+
+        # Realiza o join
         joined_rows = []
         for row1 in table1['rows']:
             join_key = row1[join_column]
             if join_key in table2_index:
                 for row2 in table2_index[join_key]:
-                # Combina as linhas
+                    # Combina as linhas
                     new_row = {}
                 # Adiciona todos os campos da tabela1
                     for h in table1['headers']:
@@ -307,11 +310,11 @@ class CSVProcessor:
                         if h != join_column:
                             new_row[f"{table2_name}.{h}"] = row2[h]
                     joined_rows.append(new_row)
-    
-    # Cria a nova tabela
+
+        # Cria a nova tabela
         self.tables[new_table_name] = {
             'headers': headers,
             'rows': joined_rows
         }
-    
+
         return f"Table '{new_table_name}' created successfully with {len(joined_rows)} rows from JOIN"

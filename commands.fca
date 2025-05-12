@@ -98,15 +98,18 @@ DISCARD TABLE observations;
 IMPORT TABLE observations FROM "observationsV2.csv";
 CREATE TABLE hottest SELECT * FROM observations WHERE Temperatura > 22;
 PRINT TABLE hottest;
+EXPORT TABLE hottest AS "hottestExp.csv";
 
 -- Limpar estado entre testes
 DISCARD TABLE observations;
 DISCARD TABLE hottest;
 
 -- Teste C2:
+IMPORT TABLE stations FROM "stations.csv";
 IMPORT TABLE observations FROM "observationsV2.csv";
-CREATE TABLE completed FROM estacoes JOIN observacoes USING(Id);
+CREATE TABLE completed FROM stations JOIN observations USING Id;
 PRINT TABLE completed;
+EXPORT TABLE completed AS "completedExp.csv";
 
 -- Limpar estado entre testes
 DISCARD TABLE observations;
@@ -117,7 +120,24 @@ DISCARD TABLE completed;
 -- =============================================
 
 -- Teste D1:
+IMPORT TABLE stations FROM "stations.csv";
+IMPORT TABLE observations FROM "observationsV2.csv";
+PROCEDURE update_observations DO
+  CREATE TABLE hottest SELECT * FROM observations WHERE Temperatura > 22;
+  PRINT TABLE hottest;
+  CREATE TABLE completed FROM stations JOIN observations USING Id;
+  PRINT TABLE completed;
+END;
+CALL update_observations;
 
 -- =============================================
--- TESTES GERAIS
+-- TESTES DA FASE E
 -- =============================================
+
+-- E1: Comentarios simples Funcionais
+
+{-
+E2: Comentarios
+Multi-linha
+Funcionais
+-}
